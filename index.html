@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buongiorno d’Avvento | Famiglia</title>
+    <!-- Typography raffinata -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icone FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #f4f1e7;
+            --surface-color: #fffdf7;
+            --text-main: #18382c;
+            --text-muted: #60756a;
+            --text-light: #91a198;
+
+            /* Palette natalizia: abete, cranberry e oro */
+            --pop-purple: #b5283c;
+            --pop-purple-light: #fcebed;
+            --pop-purple-hover: #8f1f30;
+            --pop-amber: #d6a638;
+            --pop-amber-light: #fff2c9;
+            --pop-dark: #173b2e;
+            --pop-cyan: #6caaa0;
+            --pop-green: #24734a;
+
+            --border-subtle: #e3ddca;
+            --border-purple: #c8d9c9;
+
+            --shadow-sm: 0 4px 12px rgb(29 66 48 / 0.08);
+            --shadow-md: 0 12px 28px rgb(29 66 48 / 0.18), 0 3px 8px rgb(181 40 60 / 0.10);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 12% 18%, rgb(255 255 255 / 0.85) 0 2px, transparent 3px),
+                radial-gradient(circle at 83% 32%, rgb(255 255 255 / 0.75) 0 2px, transparent 3px),
+                radial-gradient(circle at 68% 82%, rgb(214 166 56 / 0.15) 0 2px, transparent 3px),
+                linear-gradient(145deg, #f8f5ec, #edf2e9 55%, #f7ece8);
+            background-size: 96px 96px, 132px 132px, 170px 170px, auto;
+            color: var(--text-main);
+            padding: 48px 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 780px;
+            width: 100%;
+        }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header::before {
+            content: "✦  ❄  ✦";
+            display: block;
+            color: var(--pop-amber);
+            font-size: 1.1rem;
+            letter-spacing: 0.45em;
+            margin-bottom: 12px;
+        }
+
+        .motto-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #155238, #24734a);
+            color: #fffdf7;
+            border: 1px solid #d6a638;
+            padding: 7px 18px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            box-shadow: 0 5px 14px rgb(23 59 46 / 0.18);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--pop-dark);
+            background: linear-gradient(100deg, #a51f32 8%, #c18b22 48%, #17613e 92%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.04em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        h1::after {
+            content: "";
+            display: block;
+            width: 76px;
+            height: 3px;
+            margin: 12px auto 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #b5283c, #d6a638, #24734a);
+        }
+
+        p.subtitle {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* INTESTAZIONE GIORNI (LUN - VEN) */
+        .week-header {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .week-day-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--pop-purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* GRIGLIA ESATTA DA 5 COLONNE */
+        .grid-quadrati {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        /* Responsive per smartphone piccoli */
+        @media (max-width: 550px) {
+            .week-header {
+                display: none;
+            }
+            .grid-quadrati {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+
+        .calendar-spacer {
+            aspect-ratio: 1 / 1;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .item-square {
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(155deg, #fffefa 5%, #f7f5eb 100%);
+            border: 2px solid var(--border-purple);
+            border-radius: 18px;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            color: var(--text-main);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, border-color 0.25s ease;
+            position: relative;
+            overflow: visible;
+        }
+
+        .item-square:not(.disabled):hover {
+            transform: translateY(-5px) scale(1.025);
+            box-shadow: var(--shadow-md);
+            border-color: var(--pop-amber);
+            background: linear-gradient(155deg, #fff8e3, #fcebed);
+        }
+
+        /* STILE QUADRATO DISABILITATO */
+        .item-square.disabled {
+            opacity: 0.42;
+            cursor: not-allowed;
+            background: #ebece6;
+            border-color: #d6dbd2;
+            box-shadow: none;
+        }
+
+        .item-square.disabled .square-icon {
+            visibility: hidden;
+        }
+
+        /* STILE EVIDENZIATO PER IL GIORNO CORRENTE */
+        .item-square.today {
+            border: 3px solid var(--pop-amber);
+            background: linear-gradient(145deg, #fff4d3, #fce8e9 55%, #e9f3e8);
+            box-shadow: 0 0 0 4px rgb(214 166 56 / 0.16), var(--shadow-md);
+            opacity: 1;
+        }
+
+        .item-square.today .square-day {
+            color: var(--pop-purple);
+            font-weight: 800;
+        }
+
+        .today-badge {
+            position: absolute;
+            top: -9px;
+            right: 8px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #b5283c, #8f1f30);
+            color: #fffdf7;
+            padding: 3px 9px;
+            border: 1px solid #f2d17c;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            box-shadow: 0 3px 8px rgb(95 27 31 / 0.22);
+        }
+
+        .square-month {
+            font-size: 0.7rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--pop-green);
+        }
+
+        .square-day {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            line-height: 1;
+            color: var(--pop-dark);
+            text-shadow: 0 2px 0 rgb(214 166 56 / 0.16);
+        }
+
+        .square-icon {
+            color: var(--pop-purple);
+            font-size: 0.85rem;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .holiday-label {
+            color: var(--pop-purple);
+            font-size: 0.68rem;
+            font-weight: 800;
+            line-height: 1.2;
+            text-align: center;
+            background: #fcebed;
+            padding: 3px 6px;
+            border-radius: 999px;
+        }
+
+        .item-square:not(.disabled):hover .square-icon {
+            color: var(--pop-purple);
+            transform: translate(2px, -2px) scale(1.1);
+        }
+
+        .item-square.today .square-icon {
+            color: var(--pop-purple);
+        }
+
+        .music-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            margin-top: 18px;
+            padding: 12px 22px;
+            border: 1px solid var(--pop-amber);
+            border-radius: 999px;
+            background: linear-gradient(135deg, #155238, #24734a);
+            color: #fffdf7;
+            box-shadow: 0 5px 14px rgb(23 59 46 / 0.2);
+            font: 700 0.85rem 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .music-toggle:hover {
+            box-shadow: 0 8px 18px rgb(23 59 46 / 0.26);
+            transform: translateY(-2px);
+        }
+
+        .music-toggle:focus-visible {
+            outline: 3px solid var(--pop-amber);
+            outline-offset: 3px;
+        }
+
+        .music-toggle.is-playing {
+            background: linear-gradient(135deg, #b5283c, #8f1f30);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        footer strong {
+            color: var(--pop-green);
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+        <div class="motto-tag">
+            <i class="fa-solid fa-hand-holding-heart" style="color: var(--pop-purple);"></i>
+            <span>Avvento • Famiglia</span>
+        </div>
+        <h1>Buongiorno d’Avvento</h1>
+        <p class="subtitle">Dicembre in famiglia: scegli una data per il pensiero del mattino</p>
+        <button class="music-toggle" id="musicToggle" type="button" aria-label="Avvia la musica natalizia" title="Avvia la musica natalizia">
+            <i class="fa-solid fa-music" aria-hidden="true"></i>
+            <span>Musica</span>
+        </button>
+    </header>
+
+    <!-- INTESTAZIONE GIORNI DELLA SETTIMANA -->
+    <div class="week-header">
+        <div class="week-day-title">Lunedì</div>
+        <div class="week-day-title">Martedì</div>
+        <div class="week-day-title">Mercoledì</div>
+        <div class="week-day-title">Giovedì</div>
+        <div class="week-day-title">Venerdì</div>
+    </div>
+
+    <!-- GRIGLIA DEI GIORNI DI DICEMBRE -->
+    <div class="grid-quadrati" id="buongiornoList">
+        
+        <!-- Settimana 1: 1-4 dicembre -->
+        <div class="calendar-spacer" aria-hidden="true"></div>
+        <a href="01_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-01">
+            <span class="square-month">DIC</span>
+            <span class="square-day">01</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="02_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-02">
+            <span class="square-month">DIC</span>
+            <span class="square-day">02</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="03_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-03">
+            <span class="square-month">DIC</span>
+            <span class="square-day">03</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="04_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-04">
+            <span class="square-month">DIC</span>
+            <span class="square-day">04</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+
+        <!-- Settimana 2: 7-11 dicembre -->
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">07</span>
+            <div class="square-icon"></div>
+        </div>
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">08</span>
+            <span class="holiday-label">Immacolata</span>
+            <div class="square-icon"></div>
+        </div>
+        <a href="09_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-09">
+            <span class="square-month">DIC</span>
+            <span class="square-day">09</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="10_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-10">
+            <span class="square-month">DIC</span>
+            <span class="square-day">10</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="11_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-11">
+            <span class="square-month">DIC</span>
+            <span class="square-day">11</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+
+        <!-- Settimana 3: 14-18 dicembre -->
+        <a href="14_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-14">
+            <span class="square-month">DIC</span>
+            <span class="square-day">14</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="15_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-15">
+            <span class="square-month">DIC</span>
+            <span class="square-day">15</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="16_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-16">
+            <span class="square-month">DIC</span>
+            <span class="square-day">16</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="17_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-17">
+            <span class="square-month">DIC</span>
+            <span class="square-day">17</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="18_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-18">
+            <span class="square-month">DIC</span>
+            <span class="square-day">18</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+
+        <!-- Settimana 4: 21-25 dicembre -->
+        <a href="21_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-21">
+            <span class="square-month">DIC</span>
+            <span class="square-day">21</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <a href="22_12.html" target="_blank" rel="noopener noreferrer" class="item-square" data-date="12-22">
+            <span class="square-month">DIC</span>
+            <span class="square-day">22</span>
+            <div class="square-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        </a>
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">23</span>
+            <div class="square-icon"></div>
+        </div>
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">24</span>
+            <div class="square-icon"></div>
+        </div>
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">25</span>
+            <span class="holiday-label">Buon Natale</span>
+            <div class="square-icon"></div>
+        </div>
+
+        <!-- Settimana 5: 28-31 dicembre -->
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">28</span>
+            <div class="square-icon"></div>
+        </div>
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">29</span>
+            <div class="square-icon"></div>
+        </div>
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">30</span>
+            <div class="square-icon"></div>
+        </div>
+        <div class="item-square disabled" aria-disabled="true">
+            <span class="square-month">DIC</span>
+            <span class="square-day">31</span>
+            <div class="square-icon"></div>
+        </div>
+        <div class="calendar-spacer" aria-hidden="true"></div>
+    </div>
+
+    <footer>
+        <p><strong>Valsalice</strong></p>
+    </footer>
+
+</div>
+
+<script>
+    // EVIDENZIA AUTOMATICAMENTE IL GIORNO CORRENTE E AVVIA LA MUSICA
+    window.addEventListener('DOMContentLoaded', () => {
+        const now = new Date();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const todayKey = `${month}-${day}`;
+        const todaySquare = document.querySelector(`.item-square[data-date="${todayKey}"]`);
+
+        if (todaySquare) {
+            todaySquare.classList.add('today');
+            const badge = document.createElement('span');
+            badge.className = 'today-badge';
+            badge.innerText = 'Oggi';
+            todaySquare.appendChild(badge);
+        }
+
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        const audioContext = new AudioContextClass();
+
+        // Cinque melodie natalizie: ne viene scelta una sola per ogni apertura.
+        const songs = [
+            {
+                name: 'Jingle Bells',
+                notes: [
+                    [659.25, 1], [659.25, 1], [659.25, 2],
+                    [659.25, 1], [659.25, 1], [659.25, 2],
+                    [659.25, 1], [783.99, 1], [523.25, 1.5], [587.33, 0.5], [659.25, 2],
+                    [698.46, 1], [698.46, 1], [698.46, 1], [698.46, 1],
+                    [698.46, 1], [659.25, 1], [659.25, 1], [659.25, 0.5], [659.25, 0.5],
+                    [587.33, 1], [587.33, 1], [659.25, 1], [587.33, 1], [783.99, 2]
+                ]
+            },
+            {
+                name: 'We Wish You a Merry Christmas',
+                notes: [
+                    [392, 1], [523.25, 1], [523.25, 1], [587.33, 1], [523.25, 1], [493.88, 1], [440, 2],
+                    [440, 1], [440, 1], [587.33, 1], [587.33, 1], [659.25, 1], [587.33, 1], [523.25, 1], [493.88, 2],
+                    [392, 1], [392, 1], [659.25, 1], [659.25, 1], [698.46, 1], [659.25, 1], [587.33, 1], [523.25, 2],
+                    [440, 1], [440, 1], [493.88, 1], [587.33, 1], [523.25, 1], [440, 1], [392, 2]
+                ]
+            },
+            {
+                name: 'Deck the Halls',
+                notes: [
+                    [698.46, 1], [659.25, 1], [587.33, 1], [523.25, 1], [587.33, 1], [659.25, 1], [523.25, 1], [587.33, 1],
+                    [659.25, 1], [698.46, 1], [587.33, 1], [659.25, 1], [698.46, 1], [783.99, 1], [880, 2],
+                    [880, 1], [880, 1], [880, 1], [880, 1], [783.99, 1], [698.46, 1], [783.99, 1], [698.46, 1], [659.25, 2],
+                    [698.46, 1], [659.25, 1], [587.33, 1], [523.25, 1], [587.33, 1], [659.25, 1], [523.25, 1], [587.33, 1],
+                    [659.25, 1], [587.33, 1], [523.25, 1], [493.88, 1], [440, 2]
+                ]
+            },
+            {
+                name: 'Joy to the World',
+                notes: [
+                    [783.99, 2], [739.99, 1], [698.46, 0.5], [659.25, 0.5], [587.33, 2], [523.25, 1], [493.88, 0.5], [440, 0.5],
+                    [392, 2], [392, 1], [440, 1], [493.88, 1], [523.25, 1], [523.25, 1], [587.33, 1], [659.25, 2],
+                    [659.25, 1], [698.46, 1], [783.99, 1], [783.99, 1], [880, 2], [880, 1], [880, 1], [880, 1], [880, 1],
+                    [783.99, 1], [698.46, 1], [659.25, 1], [587.33, 1], [523.25, 2]
+                ]
+            },
+            {
+                name: 'O Christmas Tree',
+                notes: [
+                    [392, 1], [523.25, 1], [523.25, 1], [523.25, 2], [587.33, 1], [659.25, 1], [659.25, 2],
+                    [659.25, 1], [587.33, 1], [659.25, 1], [698.46, 1], [783.99, 2], [783.99, 1], [783.99, 1],
+                    [880, 1], [880, 1], [880, 1], [880, 1], [783.99, 1], [783.99, 1], [783.99, 2],
+                    [659.25, 1], [659.25, 1], [659.25, 1], [659.25, 1], [587.33, 1], [587.33, 1], [659.25, 1], [587.33, 1], [523.25, 2]
+                ]
+            },
+            {
+                name: 'Silent Night',
+                notes: [
+                    [392, 1], [440, 1], [392, 1], [329.63, 2],
+                    [392, 1], [440, 1], [392, 1], [329.63, 2],
+                    [587.33, 2], [587.33, 1], [493.88, 2],
+                    [523.25, 2], [523.25, 1], [392, 2],
+                    [440, 2], [440, 1], [523.25, 1], [493.88, 1], [440, 1],
+                    [392, 1], [440, 1], [392, 1], [329.63, 2]
+                ]
+            },
+            {
+                name: 'The First Noel',
+                notes: [
+                    [659.25, 1], [587.33, 1], [523.25, 1], [587.33, 1], [659.25, 1], [698.46, 1], [783.99, 2],
+                    [783.99, 1], [880, 1], [783.99, 1], [698.46, 1], [659.25, 1], [587.33, 1], [523.25, 2],
+                    [523.25, 1], [587.33, 1], [659.25, 1], [698.46, 1], [783.99, 1], [880, 1], [987.77, 2],
+                    [880, 1], [783.99, 1], [698.46, 1], [659.25, 1], [587.33, 1], [523.25, 2]
+                ]
+            },
+            {
+                name: 'God Rest Ye Merry, Gentlemen',
+                notes: [
+                    [493.88, 1], [493.88, 1], [587.33, 1], [659.25, 1], [587.33, 1], [523.25, 1], [440, 2],
+                    [440, 1], [523.25, 1], [587.33, 1], [659.25, 1], [698.46, 1], [783.99, 2],
+                    [783.99, 1], [880, 1], [783.99, 1], [698.46, 1], [659.25, 1], [587.33, 2],
+                    [493.88, 1], [493.88, 1], [587.33, 1], [659.25, 1], [587.33, 1], [523.25, 1], [440, 2]
+                ]
+            }
+        ];
+        const melody = songs[Math.floor(Math.random() * songs.length)].notes;
+        const beatSeconds = 0.46;
+        let noteIndex = 0;
+        let nextNoteTime = 0;
+        let schedulerTimer = null;
+        let isStarting = false;
+        let isPlaying = false;
+        const musicButton = document.getElementById('musicToggle');
+
+        function updateMusicButton(playing) {
+            const icon = musicButton.querySelector('i');
+            icon.className = playing ? 'fa-solid fa-pause' : 'fa-solid fa-music';
+            const label = playing ? 'Metti in pausa la musica natalizia' : 'Avvia la musica natalizia';
+            musicButton.setAttribute('aria-label', label);
+            musicButton.title = label;
+            musicButton.classList.toggle('is-playing', playing);
+        }
+
+        musicButton.addEventListener('click', () => {
+            if (isPlaying) {
+                pauseMusic();
+            } else {
+                startMusic();
+            }
+        });
+
+        function playNote(frequency, beats, start) {
+            const stop = start + beats * beatSeconds * 0.82;
+            const gain = audioContext.createGain();
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.exponentialRampToValueAtTime(0.07, start + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, stop);
+            gain.connect(audioContext.destination);
+
+            [
+                { type: 'triangle', frequency, volume: 0.72 },
+                { type: 'sine', frequency: frequency * 2.01, volume: 0.18 }
+            ].forEach(tone => {
+                const oscillator = audioContext.createOscillator();
+                const toneGain = audioContext.createGain();
+                oscillator.type = tone.type;
+                oscillator.frequency.value = tone.frequency;
+                toneGain.gain.value = tone.volume;
+                oscillator.connect(toneGain);
+                toneGain.connect(gain);
+                oscillator.start(start);
+                oscillator.stop(stop + 0.02);
+            });
+        }
+
+        function scheduleNotes() {
+            const now = audioContext.currentTime;
+            // Evita di riprodurre in raffica le note saltate se il browser rallenta la pagina.
+            if (nextNoteTime < now - 0.1) nextNoteTime = now + 0.05;
+
+            while (nextNoteTime < now + 0.12) {
+                const [frequency, beats] = melody[noteIndex];
+                playNote(frequency, beats, nextNoteTime);
+                nextNoteTime += beats * beatSeconds;
+                noteIndex = (noteIndex + 1) % melody.length;
+            }
+        }
+
+        async function startMusic() {
+            if (isStarting || isPlaying || document.hidden) return;
+            isStarting = true;
+            try {
+                await audioContext.resume();
+                if (document.hidden) return;
+                isPlaying = true;
+                nextNoteTime = audioContext.currentTime + 0.05;
+                scheduleNotes();
+                schedulerTimer = setInterval(scheduleNotes, 25);
+                updateMusicButton(true);
+            } catch (error) {
+                // L'autoplay potrebbe essere bloccato dalle impostazioni del browser.
+            } finally {
+                isStarting = false;
+            }
+        }
+
+        async function pauseMusic() {
+            clearInterval(schedulerTimer);
+            schedulerTimer = null;
+            isPlaying = false;
+            updateMusicButton(false);
+            await audioContext.suspend();
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && isPlaying) pauseMusic();
+        });
+
+        // Il pulsante avvia l'audio direttamente dal gesto dell'utente,
+        // necessario nei browser che bloccano la riproduzione automatica.
+    });
+</script>
+
+</body>
+</html>
