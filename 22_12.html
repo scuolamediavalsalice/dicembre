@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4f0e7">
+    <meta name="description" content="Un buongiorno per la scuola sulla condivisione, la festa e la famiglia come luogo di comunione.">
+    <title>Buongiorno 22 dicembre</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #1d3029;
+            --green: #24483b;
+            --cream: #f4f0e7;
+            --paper: #fffdf8;
+            --red: #c9543e;
+            --gold: #e9bf68;
+            --muted: #68756d;
+            --serif: Georgia, 'Times New Roman', serif;
+            --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        * { box-sizing: border-box; }
+        html { width: 100%; max-width: 100%; overflow-x: clip; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+        body { width: 100%; max-width: 100%; margin: 0; overflow-x: clip; color: var(--ink); background: var(--cream); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+        a { color: inherit; }
+        a:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+        .skip-link { position: fixed; z-index: 20; top: .75rem; left: .75rem; padding: .75rem 1rem; background: white; transform: translateY(-150%); }
+        .skip-link:focus { transform: translateY(0); }
+        .slide { position: relative; width: 100%; height: 100svh; min-height: 560px; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
+        .slide-inner { width: min(100%, 1280px); height: 100%; margin-inline: auto; padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 7vw, 7rem); }
+        .eyebrow { display: flex; align-items: center; gap: .7rem; margin: 0 0 1rem; color: var(--red); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+        .eyebrow::before { width: 22px; height: 2px; background: currentColor; content: ''; }
+        h1, h2, h3, p { margin-top: 0; }
+        h1, h2, blockquote { font-family: var(--serif); font-weight: 400; letter-spacing: -.055em; }
+        .slide-index { position: absolute; right: clamp(2rem, 7vw, 7rem); bottom: 1.5rem; color: var(--muted); font-size: .67rem; font-weight: 800; letter-spacing: .12em; }
+        .slide-index a { text-decoration: none; }
+        .slide-index a:hover { color: var(--red); }
+        .cover { color: var(--paper); background: var(--green); }
+        .cover .slide-inner { display: flex; flex-direction: column; justify-content: space-between; }
+        .cover-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: rgba(255,253,248,.72); font-size: .72rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+        .cover-top strong { color: var(--gold); }
+        .cover-main { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .78fr); align-items: center; gap: clamp(2rem, 7vw, 7rem); }
+        .cover .eyebrow { color: var(--gold); }
+        .cover h1 { max-width: 760px; margin: 0; font-size: clamp(3.8rem, 7vw, 7rem); line-height: .88; }
+        .cover h1 em { color: var(--gold); font-weight: 400; }
+        .cover-theme { margin: 2rem 0 0; color: rgba(255,253,248,.78); font-size: clamp(.95rem, 1.5vw, 1.2rem); line-height: 1.65; }
+        .cover-theme strong { color: white; }
+        .table-art { position: relative; min-height: 320px; display: grid; place-items: center; }
+        .table-art::before { position: absolute; width: min(30vw, 390px); aspect-ratio: 1; border: 1px solid rgba(255,255,255,.13); border-radius: 50%; content: ''; }
+        .table-art::after { position: absolute; width: min(23vw, 300px); aspect-ratio: 1; border: 1px solid rgba(255,255,255,.13); border-radius: 50%; content: ''; }
+        .table-scene { position: relative; z-index: 1; width: min(100%, 410px); filter: drop-shadow(0 24px 24px rgba(0,0,0,.2)); }
+        .cover-bottom { display: flex; justify-content: space-between; align-items: end; gap: 1rem; color: rgba(255,253,248,.65); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+        .cover-bottom span:last-child { color: var(--gold); }
+        .activity { background: var(--cream); }
+        .activity .slide-inner { display: flex; flex-direction: column; justify-content: center; padding-top: clamp(1.25rem, 3vh, 2.5rem); padding-bottom: clamp(1.25rem, 3vh, 2.5rem); }
+        .slide-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: clamp(.8rem, 2vh, 1.35rem); }
+        .slide-heading h2 { margin: 0; font-size: clamp(2.5rem, 5vw, 5rem); line-height: .92; }
+        .time { flex: 0 0 auto; margin: 0 0 .25rem; color: var(--red); font-family: var(--serif); font-size: 1.25rem; }
+        .activity-intro { max-width: 850px; margin: 0 0 clamp(1rem, 2.5vh, 1.7rem); color: var(--muted); font-size: clamp(.9rem, 1.3vw, 1.05rem); line-height: 1.55; }
+        .image-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.65rem, 1.3vw, 1rem); }
+        .image-card { position: relative; min-width: 0; aspect-ratio: 1.85; overflow: hidden; border-radius: 3px; background: #ded4bd; box-shadow: 0 8px 22px rgba(29,48,41,.08); }
+        .image-card svg { display: block; width: 100%; height: 100%; transition: transform .55s cubic-bezier(.2,.7,.2,1); }
+        .image-card:hover svg { transform: scale(1.045); }
+        .card-number { position: absolute; top: .65rem; left: .65rem; z-index: 1; display: grid; width: 2rem; height: 2rem; place-items: center; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; color: white; background: rgba(29,48,41,.5); font-size: .68rem; font-weight: 800; backdrop-filter: blur(5px); }
+        .activity-prompt { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 1rem; margin-top: clamp(.9rem, 2vh, 1.4rem); padding: .9rem 1.1rem; border-left: 3px solid var(--red); background: var(--paper); }
+        .activity-prompt strong { color: var(--green); }
+        .activity-prompt p { margin: 0; color: var(--muted); font-size: clamp(.82rem, 1.2vw, .97rem); line-height: 1.55; }
+        .timer { color: var(--red); font-family: var(--serif); font-size: 1.2rem; white-space: nowrap; }
+        .reflection { color: var(--paper); background: var(--green); }
+        .reflection .slide-inner { display: flex; flex-direction: column; justify-content: center; }
+        .reflection .eyebrow { color: var(--gold); }
+        .reflection .slide-heading { margin-bottom: clamp(1.4rem, 4vh, 3rem); }
+        .reflection .slide-heading h2 { max-width: 820px; }
+        .reflection .time { color: var(--gold); }
+        .reflection-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(1rem, 2vw, 1.6rem); }
+        .reflection-card { min-width: 0; padding: clamp(1.4rem, 3vw, 2.6rem); color: var(--ink); background: var(--paper); }
+        .card-label { margin-bottom: 1rem; color: var(--red); font-size: .67rem; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+        .reflection-card h3 { margin-bottom: .8rem; color: var(--green); font-family: var(--serif); font-size: clamp(1.55rem, 2.6vw, 2.5rem); font-weight: 400; letter-spacing: -.04em; line-height: 1.05; }
+        .reflection-card p { margin-bottom: 0; color: var(--muted); font-size: clamp(.83rem, 1.15vw, .98rem); line-height: 1.7; }
+        .references { display: block; margin-top: 1rem; color: var(--green); font-size: .72rem; font-weight: 750; line-height: 1.6; }
+        .question-list { display: grid; gap: .7rem; margin: 1rem 0 0; padding: 0; list-style: none; counter-reset: question; }
+        .question-list li { display: grid; grid-template-columns: 1.5rem 1fr; gap: .5rem; color: var(--ink); font-size: clamp(.82rem, 1.1vw, .96rem); line-height: 1.45; counter-increment: question; }
+        .question-list li::before { color: var(--red); font-weight: 800; content: counter(question, decimal-leading-zero); }
+        .closing { color: var(--ink); background: var(--gold); }
+        .closing .slide-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .closing .eyebrow { color: var(--green); }
+        .closing blockquote { max-width: 1050px; margin: 1.5rem auto; font-size: clamp(3rem, 8.5vw, 8rem); line-height: .96; }
+        .closing-note { margin: 0; color: rgba(29,48,41,.72); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+        .closing .slide-index { color: rgba(29,48,41,.65); }
+        @media (max-width: 700px) {
+            html { scroll-snap-type: y proximity; }
+            .slide { height: auto; min-height: 100svh; overflow: visible; }
+            .slide-inner { min-height: 100svh; height: auto; padding: 2rem 1.2rem 3.5rem; }
+            .cover-main { grid-template-columns: 1fr; gap: 1rem; }
+            .cover h1 { font-size: clamp(3.4rem, 14vw, 5.5rem); }
+            .cover-theme { margin-top: 1.2rem; }
+            .table-art { min-height: 220px; }
+            .table-art::before { width: 240px; }
+            .table-art::after { width: 180px; }
+            .table-scene { width: min(82%, 320px); }
+            .cover-bottom { padding-top: 1.5rem; }
+            .activity .slide-inner, .reflection .slide-inner { justify-content: flex-start; padding-top: 3rem; }
+            .slide-heading { align-items: start; }
+            .slide-heading h2 { font-size: clamp(2.4rem, 10vw, 4rem); }
+            .time { font-size: 1rem; }
+            .image-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .image-card { aspect-ratio: 1.35; }
+            .activity-prompt { align-items: start; }
+            .reflection-grid { grid-template-columns: 1fr; }
+            .reflection .slide-heading { margin-bottom: 1.3rem; }
+            .closing .slide-inner { justify-content: center; }
+            .closing blockquote { font-size: clamp(3rem, 13vw, 5rem); }
+        }
+        @media (max-width: 390px) {
+            .cover-top { font-size: .6rem; }
+            .image-cards { gap: .45rem; }
+            .card-number { top: .4rem; left: .4rem; width: 1.7rem; height: 1.7rem; }
+            .activity-prompt { grid-template-columns: 1fr; gap: .3rem; }
+        }
+        @media (max-height: 650px) and (min-width: 701px) {
+            .slide-inner { padding-top: 1.5rem; padding-bottom: 2.5rem; }
+            .image-card { aspect-ratio: 1.8; }
+            .reflection .slide-heading { margin-bottom: 1rem; }
+            .reflection-card { padding: 1.3rem 1.6rem; }
+            .question-list { gap: .45rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+    <main id="contenuto">
+        <section class="slide cover" id="inizio" aria-labelledby="titolo">
+            <div class="slide-inner">
+                <div class="cover-top"><span>Buongiorno a scuola</span><strong>Martedì · 22 dicembre</strong></div>
+                <div class="cover-main">
+                    <div>
+                        <p class="eyebrow">Condivisione e festa</p>
+                        <h1 id="titolo">La tavola <em>apparecchiata.</em></h1>
+                        <p class="cover-theme"><strong>Il tema di oggi</strong><br>La famiglia come luogo di comunione.</p>
+                    </div>
+                    <div class="table-art" aria-hidden="true">
+                        <svg class="table-scene" viewBox="0 0 440 340" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="220" cy="265" rx="167" ry="42" fill="#17362c" opacity=".7"/>
+                            <path d="M69 188c0-41 67-74 151-74s151 33 151 74v31c0 41-67 74-151 74S69 260 69 219z" fill="#bd573f"/>
+                            <ellipse cx="220" cy="188" rx="151" ry="74" fill="#e9bf68"/>
+                            <ellipse cx="220" cy="190" rx="119" ry="51" fill="#fff5dc"/>
+                            <ellipse cx="220" cy="192" rx="83" ry="31" fill="#d6e1d3"/>
+                            <path d="M175 191c12-16 26-24 45-24s34 8 45 24c-11 16-26 23-45 23s-33-7-45-23" fill="#67876a"/>
+                            <circle cx="220" cy="188" r="18" fill="#db7653"/>
+                            <path d="M220 170c-7-12-6-20 0-26 8 7 10 15 0 26m-5-1c-12-6-20-5-24 3 10 7 18 6 24-3m10 0c12-6 20-5 24 3-10 7-18 6-24-3" fill="#65805e"/>
+                            <g fill="#fffdf8"><ellipse cx="100" cy="94" rx="37" ry="12"/><ellipse cx="340" cy="94" rx="37" ry="12"/><ellipse cx="80" cy="247" rx="37" ry="12"/><ellipse cx="360" cy="247" rx="37" ry="12"/></g>
+                            <g fill="none" stroke="#e9bf68" stroke-width="4"><circle cx="100" cy="94" r="23"/><circle cx="340" cy="94" r="23"/><circle cx="80" cy="247" r="23"/><circle cx="360" cy="247" r="23"/></g>
+                            <g fill="#fff3cf"><path d="M128 72h8v30h-8z"/><path d="M304 72h8v30h-8z"/><path d="M108 225h8v30h-8z"/><path d="M316 225h8v30h-8z"/></g>
+                            <g fill="#e9bf68"><path d="M123 69h18v5h-18z"/><path d="M299 69h18v5h-18z"/><path d="M103 222h18v5h-18z"/><path d="M311 222h18v5h-18z"/></g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="cover-bottom"><span>Un buongiorno per incontrarsi</span><span>Scuola Valsalice · 01 / 04</span></div>
+            </div>
+        </section>
+
+        <section class="slide activity" id="attivita" aria-labelledby="attivita-titolo">
+            <div class="slide-inner">
+                <p class="eyebrow">01 · Un Natale da immaginare</p>
+                <div class="slide-heading"><h2 id="attivita-titolo">Dixit delle emozioni</h2><p class="time">1,5 min</p></div>
+                <p class="activity-intro">Scegli una carta e inventa una storia ambientata a Natale. Chi sono i personaggi? Come si incontrano e che cosa fanno? In questa attività, «ritrovarsi a tavola» non significa necessariamente sedersi attorno a un tavolo: vuol dire incontrarsi, fare festa e stare insieme.</p>
+                <div class="image-cards" aria-label="Sei illustrazioni originali da cui scegliere">
+                    <article class="image-card" aria-label="Illustrazione 1: una barca attraversa un cielo di nuvole con alcuni uccelli">
+                        <span class="card-number">01</span>
+                        <svg viewBox="0 0 400 250" role="img" aria-label="Una piccola barca a vela naviga sopra un mare di nuvole, mentre alcuni uccelli volano nel cielo">
+                            <defs><linearGradient id="sky1" x2="0" y2="1"><stop stop-color="#526f88"/><stop offset="1" stop-color="#e5a77a"/></linearGradient></defs>
+                            <rect width="400" height="250" fill="url(#sky1)"/><circle cx="305" cy="58" r="29" fill="#f8d995"/>
+                            <path d="M0 164c39-31 68-25 99 4 37-40 82-32 111 5 31-39 74-38 107 0 33-34 57-31 83 2v75H0z" fill="#e9d8c0"/>
+                            <path d="M0 196c49-30 82-14 118 12 44-37 77-31 117 3 38-29 76-24 110 3 20-15 38-17 55-8v44H0z" fill="#fff1dc"/>
+                            <path d="M196 73v112" stroke="#463d42" stroke-width="6"/><path d="M190 80 132 163h58z" fill="#f7efe0"/><path d="M202 95 259 164h-57z" fill="#d96e55"/>
+                            <path d="M119 176h151l-20 25H140z" fill="#314d5a"/><path d="M187 183h39" stroke="#f8d995" stroke-width="5" stroke-linecap="round"/>
+                            <path d="M65 80c17-13 35-13 52 0m184 69c18-13 34-13 52 0" fill="none" stroke="#fff4de" stroke-width="3" opacity=".8"/>
+                            <path d="M82 119q8-9 16 0 8-9 16 0m222-35q7-8 14 0 7-8 14 0" fill="none" stroke="#354b57" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </article>
+                    <article class="image-card" aria-label="Illustrazione 2: una porta luminosa si apre su un sentiero nel bosco">
+                        <span class="card-number">02</span>
+                        <svg viewBox="0 0 400 250" role="img" aria-label="Una porta gialla aperta illumina un sentiero nel bosco">
+                            <defs><linearGradient id="forest2" x2="0" y2="1"><stop stop-color="#708d79"/><stop offset="1" stop-color="#263f39"/></linearGradient><radialGradient id="glow2"><stop stop-color="#fff3bc" stop-opacity=".95"/><stop offset="1" stop-color="#f3c46a" stop-opacity="0"/></radialGradient></defs>
+                            <rect width="400" height="250" fill="url(#forest2)"/><circle cx="208" cy="128" r="111" fill="url(#glow2)"/>
+                            <path d="M0 0h76L130 250H0zm400 0h-72L269 250h131z" fill="#243b35"/>
+                            <path d="M28 12h16v171H28zm69 21h13v152H97zm246-20h17v171h-17zm-65 13h14v154h-14z" fill="#435b49"/>
+                            <path d="m0 250 154-94h91l155 94z" fill="#bd9a65"/><path d="m122 250 65-107h29l66 107z" fill="#e9c782"/>
+                            <path d="M158 177V65h83v112" fill="#684a3a"/><path d="M171 177V78h57v99" fill="#f0c66d"/><path d="M171 78h57v99z" fill="#fff2c8"/>
+                            <circle cx="217" cy="132" r="4" fill="#8b6141"/>                            <path d="M0 197q31-20 57 0t56 0m228 0q31-20 59 0" fill="none" stroke="#9cac77" stroke-width="9"/>
+                        </svg>
+                    </article>
+                    <article class="image-card" aria-label="Illustrazione 3: una ragazza sul tetto raccoglie una stella caduta dal cielo">
+                        <span class="card-number">03</span>
+                        <svg viewBox="0 0 400 250" role="img" aria-label="Una ragazza sul tetto raccoglie una stella caduta dal cielo">
+                            <defs><linearGradient id="night3" x2="0" y2="1"><stop stop-color="#303c68"/><stop offset="1" stop-color="#a36f79"/></linearGradient></defs>
+                            <rect width="400" height="250" fill="url(#night3)"/><circle cx="311" cy="57" r="28" fill="#f2d99e"/>
+                            <g fill="#fff0c9"><circle cx="64" cy="45" r="3"/><circle cx="117" cy="72" r="2"/><circle cx="224" cy="38" r="3"/><circle cx="359" cy="117" r="2"/><path d="m166 42 4 9 10 1-8 6 3 9-9-5-8 5 3-9-8-6 10-1z"/></g>
+                            <path d="M0 204 120 98l123 106v46H0z" fill="#374152"/><path d="m107 204 116-97 113 97v46H107z" fill="#4a4658"/>
+                            <path d="M210 155v-65" stroke="#342f43" stroke-width="8"/><circle cx="210" cy="82" r="17" fill="#db9a72"/><path d="M192 82c-4-23 32-31 39-7l-6 8-9-9-13 12z" fill="#47394a"/><path d="m196 105-14 47 42 6 5-50z" fill="#e7a47b"/><path d="M189 111q21 13 42 0l10 49-54-2z" fill="#e8c16f"/>
+                            <path d="M235 125q17-27 30-24" fill="none" stroke="#db9a72" stroke-width="8" stroke-linecap="round"/><path d="m267 91 5 12 13 2-10 8 3 13-11-7-11 7 4-13-11-8 13-2z" fill="#ffe89d"/>
+                            <path d="m0 204 120-106 123 106" fill="none" stroke="#e2b182" stroke-width="4"/>
+
+                        </svg>
+                    </article>
+                    <article class="image-card" aria-label="Illustrazione 4: un elefante fa crescere un giardino">
+                        <span class="card-number">04</span>
+                        <svg viewBox="0 0 400 250" role="img" aria-label="Un piccolo elefante annaffia fiori che diventano grandi come alberi">
+                            <defs><linearGradient id="garden4" x2="0" y2="1"><stop stop-color="#b5d8cb"/><stop offset="1" stop-color="#e8d5a1"/></linearGradient></defs>
+                            <rect width="400" height="250" fill="url(#garden4)"/><circle cx="325" cy="53" r="27" fill="#fff0bd"/>
+                            <path d="M0 182q76-37 145 0t128 0q64-29 127 1v67H0z" fill="#628b6c"/><path d="M0 211q83-28 164 0t129-2q57-20 107 2v39H0z" fill="#426e5a"/>
+                            <path d="M45 193V76" stroke="#53794f" stroke-width="10"/><circle cx="45" cy="68" r="31" fill="#f1ad66"/><circle cx="25" cy="83" r="24" fill="#edbd73"/><circle cx="65" cy="87" r="25" fill="#e98c62"/>
+                            <path d="M346 194V92" stroke="#53794f" stroke-width="9"/><circle cx="346" cy="82" r="32" fill="#e18768"/><circle cx="324" cy="97" r="22" fill="#f2bd73"/><circle cx="369" cy="103" r="22" fill="#d77f71"/>
+                            <ellipse cx="191" cy="175" rx="47" ry="31" fill="#9aa7a1"/><circle cx="224" cy="153" r="24" fill="#aab5ae"/><path d="M239 158q23 21 6 39" fill="none" stroke="#aab5ae" stroke-width="13" stroke-linecap="round"/><circle cx="231" cy="151" r="3" fill="#293d3b"/><path d="M162 194v21m48-19v19" stroke="#657972" stroke-width="9" stroke-linecap="round"/><path d="M148 147q-20 2-23 19" fill="none" stroke="#aab5ae" stroke-width="13" stroke-linecap="round"/>
+                            <path d="M124 170q-16 10-25 22" stroke="#77bad0" stroke-width="4" stroke-dasharray="3 6"/><path d="M92 193v-21" stroke="#5d865b" stroke-width="4"/><circle cx="92" cy="168" r="11" fill="#f5d36f"/><path d="M82 168h20m-10-10v20" stroke="#fff4d2" stroke-width="2"/>
+                        </svg>
+                    </article>
+                    <article class="image-card" aria-label="Illustrazione 5: una casa galleggia sopra una città">
+                        <span class="card-number">05</span>
+                        <svg viewBox="0 0 400 250" role="img" aria-label="Una casa colorata vola legata a palloncini sopra una città">
+                            <defs><linearGradient id="sky5" x2="0" y2="1"><stop stop-color="#f4b783"/><stop offset="1" stop-color="#f5dfb2"/></linearGradient></defs>
+                            <rect width="400" height="250" fill="url(#sky5)"/><circle cx="70" cy="58" r="27" fill="#fff0c6"/>
+                            <path d="M0 206h48v-63h36v63h30v-92h38v92h41v-54h41v54h37v-82h44v82h43v44H0z" fill="#66807a"/><g fill="#f3d295"><path d="M58 156h12v13H58zm0 24h12v13H58zm64-25h12v13h-12zm0 25h12v13h-12zm98 9h12v13h-12zm80-42h13v13h-13zm0 25h13v13h-13z"/></g>
+                            <path d="M164 72 238 45l71 27" fill="none" stroke="#8b5143" stroke-width="3"/><path d="M184 70 164 30m49 35 15-47m30 32 36-32" fill="none" stroke="#fff8e7" stroke-width="2"/>
+                            <g><ellipse cx="163" cy="28" rx="13" ry="18" fill="#e66c5c"/><ellipse cx="228" cy="27" rx="13" ry="18" fill="#eac15f"/><ellipse cx="294" cy="28" rx="13" ry="18" fill="#709c83"/></g>
+                            <path d="m163 72 74-31 72 31v78H163z" fill="#f3dfb7"/><path d="m153 73 84-43 83 43z" fill="#bc5942"/><path d="M214 108h38v42h-38z" fill="#71937c"/><path d="M176 89h25v24h-25z" fill="#83b0b4"/><path d="M263 89h25v24h-25z" fill="#83b0b4"/><path d="M234 109h5v7h-5" fill="#f4dfa7"/>
+                            <path d="M26 122q20-17 41 0m247-57q19-15 38 0" fill="none" stroke="#fff5df" stroke-width="7" stroke-linecap="round"/>
+                        </svg>
+                    </article>
+                    <article class="image-card" aria-label="Illustrazione 6: due persone portano una luce insieme">
+                        <span class="card-number">06</span>
+                        <svg viewBox="0 0 400 250" role="img" aria-label="Due persone su colline diverse si passano una lanterna luminosa">
+                            <defs><linearGradient id="dusk6" x2="0" y2="1"><stop stop-color="#897b9e"/><stop offset="1" stop-color="#efb47d"/></linearGradient><radialGradient id="light6"><stop stop-color="#fff4b7" stop-opacity=".95"/><stop offset="1" stop-color="#ffdf8a" stop-opacity="0"/></radialGradient></defs>
+                            <rect width="400" height="250" fill="url(#dusk6)"/><circle cx="202" cy="135" r="91" fill="url(#light6)"/><circle cx="70" cy="62" r="24" fill="#f7ddb0"/>
+                            <path d="M0 208q89-77 184-20t216-4v66H0z" fill="#596c69"/><path d="M0 231q101-63 193-15t207-8v42H0z" fill="#334c48"/>
+                            <path d="M93 197v-56" stroke="#304642" stroke-width="9"/><circle cx="93" cy="129" r="16" fill="#b76e61"/><path d="m78 151 30-2 12 45H67z" fill="#db9470"/><path d="M109 158q34-39 76-26" fill="none" stroke="#b76e61" stroke-width="9" stroke-linecap="round"/>
+                            <path d="M303 195v-55" stroke="#304642" stroke-width="9"/><circle cx="303" cy="127" r="16" fill="#ecc093"/><path d="m287 150 31 0 14 46h-60z" fill="#e6bc69"/><path d="M286 159q-35-39-77-27" fill="none" stroke="#ecc093" stroke-width="9" stroke-linecap="round"/>
+                            <path d="M186 124q16-13 31 0v28h-31z" fill="#eec766" stroke="#fff1bb" stroke-width="3"/><path d="M190 124q12-23 24 0" fill="none" stroke="#fff1bb" stroke-width="3"/><path d="M193 132h17v14h-17z" fill="#fff0a5"/>
+                            <g fill="#fff1c5"><circle cx="145" cy="82" r="3"/><circle cx="240" cy="67" r="2"/><circle cx="342" cy="83" r="3"/><circle cx="53" cy="110" r="2"/></g>
+                        </svg>
+                    </article>
+                </div>
+            </div>
+            <div class="slide-index"><a href="#inizio">02</a> — <a href="#riflessione">03 →</a></div>
+        </section>
+
+        <section class="slide reflection" id="riflessione" aria-labelledby="riflessione-titolo">
+            <div class="slide-inner">
+                <p class="eyebrow">02 · Una luce salesiana</p>
+                <div class="slide-heading"><h2 id="riflessione-titolo">A tavola si condivide la vita.</h2><p class="time">2 min</p></div>
+                <div class="reflection-grid">
+                    <article class="reflection-card">
+                        <p class="card-label">Il Vangelo a tavola</p>
+                        <h3>Gesù faceva della tavola un luogo d’incontro.</h3>
+                        <p>Lo vediamo entrare nella casa di Zaccheo e sedersi a tavola con lui; partecipare alle nozze di Cana; condividere l’ultima cena con i discepoli. Nei gesti quotidiani del mangiare insieme si fanno spazio l’accoglienza, l’amicizia e la cura.</p>
+                        <span class="references">Zaccheo · Luca 19,1–10 &nbsp; / &nbsp; Nozze di Cana · Giovanni 2,1–11 &nbsp; / &nbsp; Ultima Cena · Luca 22,14–20</span>
+                    </article>
+                    <article class="reflection-card">
+                        <p class="card-label">Parliamone insieme</p>
+                        <h3>Una mensa, una famiglia.</h3>
+                        <p>Don Bosco desiderava che l’oratorio fosse una casa accogliente: la mensa, come ogni momento condiviso, può diventare un segno concreto di fraternità.</p>
+                        <ol class="question-list">
+                            <li>Quale piccolo gesto ti fa sentire accolto a tavola?</li>
+                            <li>Che cosa puoi condividere con chi ti sta accanto, oltre al cibo?</li>
+                            <li>Come possiamo fare posto a qualcuno che rischia di restare ai margini?</li>
+                        </ol>
+                    </article>
+                </div>
+            </div>
+            <div class="slide-index"><a href="#attivita">03</a> — <a href="#frase-finale">04 →</a></div>
+        </section>
+
+        <section class="slide closing" id="frase-finale" aria-labelledby="titolo-finale">
+            <div class="slide-inner">
+                <p class="eyebrow">La frase da portare con noi</p>
+                <blockquote id="titolo-finale">«A tavola insieme non si condivide solo il cibo, ma la vita.»</blockquote>
+                <p class="closing-note">Fare posto a tavola è fare posto alle persone.</p>
+            </div>
+            <div class="slide-index"><a href="#riflessione">04</a> — <a href="#inizio">Torna all’inizio ↑</a></div>
+        </section>
+    </main>
+</body>
+</html>

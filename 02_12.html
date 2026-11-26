@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buongiorno d'Avvento – Vegliare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        advent: {
+                            bg: '#F8FAFC',
+                            red: '#DC2626',
+                            purple: '#6D28D9',
+                            green: '#059669',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; overflow: hidden; user-select: none; }
+        .compact-card {
+            background: #FFFFFF;
+            border: 3px solid #E2E8F0;
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.06);
+            border-radius: 1.25rem;
+            transition: all 0.15s ease-in-out;
+        }
+        .compact-card:hover { border-color: #CBD5E1; box-shadow: 0 12px 20px -4px rgba(0, 0, 0, 0.1); }
+        .slides-wrapper {
+            display: flex;
+            width: 400vw;
+            height: 100vh;
+            transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            padding: 6rem 3rem 2rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .active-dot { width: 2.5rem !important; background-color: #DC2626 !important; }
+        @media (max-width: 640px) {
+            .slide { padding: 5.5rem 1rem 1rem; }
+            header { padding-left: 1rem !important; padding-right: 1rem !important; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 font-sans h-full select-none">
+    <header class="fixed top-0 left-0 w-full px-8 py-3.5 z-40 flex items-center justify-between bg-white border-b-2 border-slate-200 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-red-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-red-600/30">
+                <i class="fa-solid fa-fire" aria-hidden="true"></i>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg md:text-2xl text-slate-900">Mercoledì 2 dicembre</h1>
+                <span class="hidden sm:block text-xs md:text-sm font-semibold text-slate-500">Scuola Valsalice</span>
+            </div>
+        </div>
+
+        <nav aria-label="Navigazione delle slide" class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-full border border-slate-300">
+            <button aria-label="Vai alla slide 1" onclick="goToSlide(0)" id="dot-0" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all active-dot"></button>
+            <button aria-label="Vai alla slide 2" onclick="goToSlide(1)" id="dot-1" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+            <button aria-label="Vai alla slide 3" onclick="goToSlide(2)" id="dot-2" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+            <button aria-label="Vai alla slide 4" onclick="goToSlide(3)" id="dot-3" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+        </nav>
+
+        <div class="flex items-center gap-2.5">
+            <button id="sound-btn" onclick="toggleSound()" class="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 flex items-center justify-center text-slate-700 transition" title="Attiva o disattiva i suoni" aria-label="Attiva o disattiva i suoni">
+                <i id="sound-icon" class="fa-solid fa-volume-high text-base" aria-hidden="true"></i>
+            </button>
+            <button onclick="toggleFullscreen()" class="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 flex items-center justify-center text-slate-700 transition" title="Schermo intero" aria-label="Schermo intero">
+                <i class="fa-solid fa-expand text-base" aria-hidden="true"></i>
+            </button>
+        </div>
+    </header>
+
+    <main id="slides-wrapper" class="slides-wrapper">
+        <section class="slide" aria-label="Introduzione">
+            <div class="max-w-4xl mx-auto w-full text-center space-y-8">
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-red-100 border-2 border-red-300 text-red-700 text-sm font-extrabold uppercase tracking-wider">
+                    <i class="fa-solid fa-sun" aria-hidden="true"></i>
+                    <span>Una connessione speciale per l'Avvento</span>
+                </div>
+                <div class="space-y-5">
+                    <h2 class="font-black text-5xl md:text-7xl lg:text-8xl text-slate-900 tracking-tight leading-tight">
+                        Facciamo attenzione,<br><span class="text-red-600">restiamo connessi.</span>                    
+                </div>
+                <button onclick="goToSlide(1)" class="px-8 py-4 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-extrabold text-lg md:text-xl shadow-lg shadow-red-600/30 transition transform hover:scale-105 active:scale-95 inline-flex items-center gap-3">
+                    <span>Riflettiamo insieme</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </section>
+
+        <section class="slide" aria-label="Sondaggio">
+            <div class="max-w-5xl mx-auto w-full space-y-5">
+                <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3 gap-3">
+                    <div>
+                        <span class="text-sm font-extrabold text-red-600 uppercase tracking-wider">Sondaggio</span>
+                        <h2 class="font-black text-xl md:text-3xl text-slate-900">Che cosa significa vegliare nella tua famiglia?</h2>
+                    </div>
+                    <button onclick="resetStats()" class="shrink-0 px-3 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-bold transition">
+                        <i class="fa-solid fa-rotate-left mr-1" aria-hidden="true"></i> Azzera
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button type="button" onclick="addVote('presente')" class="compact-card text-left p-4 md:p-5 cursor-pointer border-l-8 border-l-emerald-600">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-black text-emerald-800 bg-emerald-100 px-3 py-1 rounded-lg">1. Vivere il presente</span>
+                            <i class="fa-solid fa-leaf text-emerald-600 text-xl" aria-hidden="true"></i>
+                        </div>
+                        <p class="text-sm text-slate-700 font-medium mb-3">Essere davvero qui, invece di vivere distratti o con la testa altrove.</p>
+                        <div class="space-y-1 pt-2 border-t border-slate-100">
+                            <div class="flex justify-between text-sm font-bold"><span>Voti: <strong id="count-presente" class="text-slate-900">0</strong></span><span id="percent-presente" class="text-emerald-600">0%</span></div>
+                            <div class="w-full h-3 rounded-full bg-slate-100 overflow-hidden"><div id="bar-presente" class="h-full bg-emerald-600 rounded-full transition-all duration-300" style="width: 0%"></div></div>
+                        </div>
+                    </button>
+
+                    <button type="button" onclick="addVote('ascolto')" class="compact-card text-left p-4 md:p-5 cursor-pointer border-l-8 border-l-purple-600">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-black text-purple-800 bg-purple-100 px-3 py-1 rounded-lg">2. Accorgersi degli altri</span>
+                            <i class="fa-solid fa-ear-listen text-purple-600 text-xl" aria-hidden="true"></i>
+                        </div>
+                        <p class="text-sm text-slate-700 font-medium mb-3">Ascoltare con attenzione e cogliere quando qualcuno ha bisogno di noi.</p>
+                        <div class="space-y-1 pt-2 border-t border-slate-100">
+                            <div class="flex justify-between text-sm font-bold"><span>Voti: <strong id="count-ascolto" class="text-slate-900">0</strong></span><span id="percent-ascolto" class="text-purple-600">0%</span></div>
+                            <div class="w-full h-3 rounded-full bg-slate-100 overflow-hidden"><div id="bar-ascolto" class="h-full bg-purple-600 rounded-full transition-all duration-300" style="width: 0%"></div></div>
+                        </div>
+                    </button>
+
+                    <button type="button" onclick="addVote('responsabilita')" class="compact-card text-left p-4 md:p-5 cursor-pointer border-l-8 border-l-red-600">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-black text-red-800 bg-red-100 px-3 py-1 rounded-lg">3. Agire con responsabilità</span>
+                            <i class="fa-solid fa-hand-holding-heart text-red-600 text-xl" aria-hidden="true"></i>
+                        </div>
+                        <p class="text-sm text-slate-700 font-medium mb-3">Fare la propria parte, con cura, nelle piccole scelte di ogni giorno.</p>
+                        <div class="space-y-1 pt-2 border-t border-slate-100">
+                            <div class="flex justify-between text-sm font-bold"><span>Voti: <strong id="count-responsabilita" class="text-slate-900">0</strong></span><span id="percent-responsabilita" class="text-red-600">0%</span></div>
+                            <div class="w-full h-3 rounded-full bg-slate-100 overflow-hidden"><div id="bar-responsabilita" class="h-full bg-red-600 rounded-full transition-all duration-300" style="width: 0%"></div></div>
+                        </div>
+                    </button>
+
+                    <button type="button" onclick="addVote('attesa')" class="compact-card text-left p-4 md:p-5 cursor-pointer border-l-8 border-l-amber-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-black text-amber-800 bg-amber-100 px-3 py-1 rounded-lg">4. Aspettare senza fare nulla</span>
+                            <i class="fa-solid fa-hourglass-half text-amber-600 text-xl" aria-hidden="true"></i>
+                        </div>
+                        <p class="text-sm text-slate-700 font-medium mb-3">Restare in attesa che qualcosa accada, senza prendere iniziativa.</p>
+                        <div class="space-y-1 pt-2 border-t border-slate-100">
+                            <div class="flex justify-between text-sm font-bold"><span>Voti: <strong id="count-attesa" class="text-slate-900">0</strong></span><span id="percent-attesa" class="text-amber-600">0%</span></div>
+                            <div class="w-full h-3 rounded-full bg-slate-100 overflow-hidden"><div id="bar-attesa" class="h-full bg-amber-500 rounded-full transition-all duration-300" style="width: 0%"></div></div>
+                        </div>
+                    </button>
+                </div>
+                <div class="bg-slate-100 rounded-xl px-4 py-3 flex items-center justify-between text-sm font-bold text-slate-700 border border-slate-300 gap-3">
+                    <span>Tocca una risposta per votare</span><span id="total-votes" class="text-slate-900 font-extrabold whitespace-nowrap">Totale risposte: 0</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" aria-label="Riflessione sull'Avvento">
+            <div class="max-w-5xl mx-auto w-full space-y-5">
+                <div class="border-b-2 border-slate-200 pb-3">
+                    <span class="text-sm font-extrabold text-red-600 uppercase tracking-wider">Il segnale dell'Avvento</span>
+                    <h2 class="font-black text-2xl md:text-3xl text-slate-900">Una connessione che ci tiene svegli</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="compact-card p-5 md:p-6 space-y-3">
+                        <div class="flex items-center gap-3 text-red-700 font-black text-lg">
+                            <i class="fa-solid fa-book-open text-red-600 text-xl" aria-hidden="true"></i><h3>L'invito di Gesù</h3>
+                        </div>
+                        <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                            «Fate attenzione, vegliate, perché non sapete quando è il momento» (Mc 13,33). Gesù non ci invita a vivere nell'ansia, ma a non lasciar passare la vita senza accorgercene. Come un telefono può essere connesso ma sommerso da troppe notifiche, anche noi possiamo esserci senza essere davvero presenti. Vegliare è riattivare la connessione del cuore.
+                        </p>
+                    </div>
+                    <div class="compact-card p-5 md:p-6 space-y-3">
+                        <div class="flex items-center gap-3 text-purple-800 font-black text-lg">
+                            <i class="fa-solid fa-compass text-purple-600 text-xl" aria-hidden="true"></i><h3>Il cammino dell'Avvento</h3>
+                        </div>
+                        <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                            All'inizio dell'Avvento risuona l'invito a vegliare: vivere il presente con amore e responsabilità. La FAMIGLIA è la prima rete di relazioni in cui possiamo imparare a farlo: esserci davvero, ascoltarci e prenderci cura gli uni degli altri. Non basta condividere la stessa casa: come con il Wi-Fi, serve una connessione attenta e viva.
+                        </p>
+                    </div>
+                </div>
+                <div class="text-center pt-1">
+                    <p class="text-sm md:text-base font-bold text-red-900 bg-red-50 border-2 border-red-200 py-3 px-5 md:px-6 rounded-xl inline-block shadow-sm">
+                        Vegliare è restare connessi: a Dio, agli altri e al bene che possiamo fare oggi.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" aria-label="Impegno per la giornata">
+            <div class="max-w-3xl mx-auto w-full text-center space-y-6">
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-red-100 border-2 border-red-300 text-red-700 text-sm font-extrabold uppercase tracking-wider">
+                    <i class="fa-solid fa-wifi" aria-hidden="true"></i><span>Riconnettiamoci</span>
+                </div>
+                <div class="compact-card p-7 md:p-10 bg-red-50/60 border-red-200 space-y-5">
+                    <div class="w-16 h-16 rounded-2xl bg-red-600 text-white flex items-center justify-center mx-auto text-2xl shadow-md">
+                        <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                    </div>
+                    <div class="w-16 h-1.5 bg-red-500 mx-auto rounded-full"></div>
+                    <p class="text-base md:text-xl text-slate-700 font-semibold leading-relaxed">
+                        Mettiamo in pausa le distrazioni e scegliamo un gesto semplice per qualcuno della nostra famiglia: ascoltare senza interrompere, aiutare senza aspettare che ci venga chiesto, o dedicare del tempo senza guardare il telefono. Così vegliamo, con amore e responsabilità, sulle persone che ci sono vicine.
+                    </p>
+                </div>
+                <p class="text-sm md:text-base font-extrabold text-slate-600">
+                    <i class="fa-solid fa-star text-red-600 mr-1" aria-hidden="true"></i> La connessione più importante può cominciare proprio in famiglia.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <button onclick="prevSlide()" id="prev-btn" aria-label="Slide precedente" class="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white border-2 border-slate-300 text-slate-800 hover:bg-slate-100 flex items-center justify-center text-base transition shadow-md z-40 opacity-30 pointer-events-none">
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    </button>
+    <button onclick="nextSlide()" id="next-btn" aria-label="Slide successiva" class="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white border-2 border-slate-300 text-slate-800 hover:bg-slate-100 flex items-center justify-center text-base transition shadow-md z-40">
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    </button>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 4;
+        const slidesWrapper = document.getElementById('slides-wrapper');
+        const voteTypes = ['presente', 'ascolto', 'responsabilita', 'attesa'];
+        const votes = { presente: 0, ascolto: 0, responsabilita: 0, attesa: 0 };
+        let isMuted = false;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = AudioContextClass ? new AudioContextClass() : null;
+
+        function playSound(type) {
+            if (isMuted || !audioCtx) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                if (type === 'vote') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(660, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.04);
+                }
+            } catch (e) {}
+        }
+
+        function addVote(type) {
+            if (!Object.hasOwn(votes, type)) return;
+            votes[type]++;
+            updateStatsUI();
+            playSound('vote');
+        }
+
+        function resetStats() {
+            voteTypes.forEach(type => votes[type] = 0);
+            updateStatsUI();
+            playSound('click');
+        }
+
+        function updateStatsUI() {
+            const total = voteTypes.reduce((sum, type) => sum + votes[type], 0);
+            document.getElementById('total-votes').textContent = `Totale risposte: ${total}`;
+            voteTypes.forEach(type => {
+                const count = votes[type];
+                const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+                document.getElementById(`count-${type}`).textContent = count;
+                document.getElementById(`percent-${type}`).textContent = `${pct}%`;
+                document.getElementById(`bar-${type}`).style.width = `${pct}%`;
+            });
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            currentSlide = index;
+            slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            updateNavUI();
+            playSound('click');
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1); }
+        function prevSlide() { if (currentSlide > 0) goToSlide(currentSlide - 1); }
+
+        function updateNavUI() {
+            for (let i = 0; i < totalSlides; i++) {
+                document.getElementById(`dot-${i}`).classList.toggle('active-dot', i === currentSlide);
+            }
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            prevBtn.classList.toggle('opacity-30', currentSlide === 0);
+            prevBtn.classList.toggle('pointer-events-none', currentSlide === 0);
+            nextBtn.classList.toggle('opacity-30', currentSlide === totalSlides - 1);
+            nextBtn.classList.toggle('pointer-events-none', currentSlide === totalSlides - 1);
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-icon');
+            icon.className = isMuted ? 'fa-solid fa-volume-xmark text-slate-400' : 'fa-solid fa-volume-high text-red-600';
+            if (!isMuted) playSound('click');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+
+        window.addEventListener('keydown', event => {
+            if (event.key === 'ArrowRight' || event.code === 'Space') nextSlide();
+            else if (event.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.onload = function() {
+            updateNavUI();
+            updateStatsUI();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buongiorno 9 dicembre</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        medical: {
+                            bg: '#F8FAFC',
+                            dark: '#0F172A',
+                            red: '#E11D48',
+                            redLight: '#FFF1F2',
+                            redBorder: '#FDA4AF',
+                            green: '#10B981',
+                            amber: '#D97706',
+                            slate: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .compact-card {
+            background: #FFFFFF;
+            border: 3px solid #E2E8F0;
+            box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.06);
+            border-radius: 1.5rem;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slides-wrapper {
+            display: flex;
+            width: 500vw;
+            height: 100vh;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            padding: 5.5rem 3rem 2rem 3rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .active-dot {
+            width: 2.5rem !important;
+            background-color: #E11D48 !important;
+        }
+
+        .pulse-red {
+            animation: pulseRed 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseRed {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.85; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 font-sans h-full select-none">
+
+    <!-- Header LIM -->
+    <header class="fixed top-0 left-0 w-full px-8 py-3.5 z-40 flex items-center justify-between bg-white border-b-2 border-slate-200 shadow-sm">
+        <div class="flex items-center space-x-4">
+            <div class="w-11 h-11 rounded-xl bg-rose-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-rose-600/30">
+                <i class="fa-solid fa-kit-medical pulse-red"></i>
+            </div>
+            <div class="flex items-center gap-3">
+                <h1 class="font-extrabold text-xl md:text-2xl text-slate-900">Mercoledì 9 Dicembre</h1>
+                <span class="text-sm font-bold bg-rose-100 text-rose-900 px-3 py-1 rounded-lg border border-rose-200">Scuola Valsalice </span>
+            </div>
+        </div>
+
+        <!-- Indicatori slide -->
+        <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-full border border-slate-300">
+            <button onclick="goToSlide(0)" id="dot-0" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all active-dot"></button>
+            <button onclick="goToSlide(1)" id="dot-1" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+            <button onclick="goToSlide(2)" id="dot-2" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+            <button onclick="goToSlide(3)" id="dot-3" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+            <button onclick="goToSlide(4)" id="dot-4" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+        </div>
+
+        <!-- Controlli audio/schermo -->
+        <div class="flex items-center gap-2.5">
+            <button id="sound-btn" onclick="toggleSound()" class="w-11 h-11 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 flex items-center justify-center text-slate-700 transition" title="Audio">
+                <i id="sound-icon" class="fa-solid fa-volume-high text-base"></i>
+            </button>
+            <button onclick="toggleFullscreen()" class="w-11 h-11 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 flex items-center justify-center text-slate-700 transition" title="Schermo intero">
+                <i class="fa-solid fa-expand text-base"></i>
+            </button>
+        </div>
+    </header>
+
+    <main id="slides-wrapper" class="slides-wrapper">
+
+        <!-- SLIDE 1: AVVISO RISERVATO DOCENTE -->
+        <section class="slide">
+            <div class="max-w-4xl mx-auto w-full text-center space-y-8">
+                
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-amber-100 border-2 border-amber-400 text-amber-900 text-sm font-extrabold uppercase tracking-wider shadow-sm">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                    <span>Istruzioni Riservate al Docente</span>
+                </div>
+
+                <div class="compact-card p-8 border-t-8 border-t-amber-500 bg-white space-y-6 text-left shadow-2xl">
+                    <div class="flex items-center gap-4 border-b pb-4">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shadow-md">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-black text-2xl md:text-3xl text-slate-900">Non condividere ancora lo schermo alla LIM!</h2>
+                            <p class="text-sm font-semibold text-slate-500">Procedura di avvio attività prima della proiezione</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-slate-700 font-medium text-base leading-relaxed">
+                        <div class="flex items-start gap-3 bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <span class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm shrink-0">1</span>
+                            <p><strong>Chiama alla cattedra l'alunno n° 9 del registro di classe.</strong></p>
+                        </div>
+
+                        <div class="flex items-start gap-3 bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <span class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm shrink-0">2</span>
+                            <p>Mostragli dal tuo monitor la parola segreta (<strong>LITIGIO</strong>) e le 5 parole vietate: <em>Fratelli, Genitori, Urlare, Avere ragione, Sbagliare</em>.</p>
+                        </div>
+
+                        <div class="flex items-start gap-3 bg-amber-50 p-4 rounded-xl border border-amber-200">
+                            <span class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm shrink-0">3</span>
+                            <p>Una volta spiegate le regole in privato all'alunno, <strong>proietta lo schermo alla LIM</strong> e passa alla slide successiva per avviare il Tabellone con Timer di 60s!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="goToSlide(1)" class="px-8 py-4 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xl shadow-xl shadow-rose-600/30 transition transform hover:scale-105 active:scale-95 inline-flex items-center gap-3">
+                        <span>Avvia la condivisione alla LIM</span>
+                        <i class="fa-solid fa-desktop text-xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 2: ATTIVITÀ TABOO -->
+        <section class="slide">
+            <div class="max-w-5xl mx-auto w-full space-y-4">
+                
+                <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3">
+                    <div>
+                        <span class="text-sm font-extrabold text-rose-600 uppercase tracking-wider">Sfida a tempo</span>
+                        <h2 class="font-black text-2xl md:text-3xl text-slate-900">Taboo familiare</h2>
+                    </div>
+                    
+                    <!-- Timer Digitale (60 Sec) -->
+                    <div class="flex items-center gap-3">
+                        <div class="bg-slate-900 text-white px-5 py-2 rounded-xl border-2 border-rose-500 font-mono font-black text-xl flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-stopwatch text-rose-400"></i>
+                            <span id="timer-display">01:00</span>
+                        </div>
+                        <button onclick="toggleTimer()" id="timer-btn" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-extrabold shadow-md transition">
+                            Avvia Timer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    
+                    <!-- Carta Taboo Schermata alla LIM (7 Colonne) -->
+                    <div class="md:col-span-7 compact-card p-6 border-t-8 border-t-rose-600 space-y-4 relative overflow-hidden bg-white min-h-[340px] flex flex-col justify-between">
+                        
+                        <!-- Maschera per la LIM -->
+                        <div id="taboo-mask" class="absolute inset-0 bg-slate-900 text-white z-20 flex flex-col items-center justify-center p-6 text-center">
+                            <div class="w-16 h-16 rounded-2xl bg-rose-600 text-white flex items-center justify-center text-3xl mb-3 shadow-lg pulse-red border-2 border-rose-400">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </div>
+                            <h3 class="font-black text-2xl mb-1 text-rose-400">PAROLA SEGRETA IN GIOCO</h3>
+                            <p class="text-xs text-slate-300 max-w-xs font-medium mb-4">
+                                L'alunno n°9 dell'appello riceve la parola segreta dal docente. La scheda alla LIM si sbloccherà soltanto quando la classe indovina!
+                            </p>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 text-xs font-mono border border-slate-700">
+                                Tabellone attivo • Avvia il timer
+                            </span>
+                        </div>
+
+                        <!-- Contenuto della Scheda -->
+                        <div>
+                            <div class="bg-rose-50 border-2 border-rose-200 rounded-2xl p-4 text-center mb-4">
+                                <span class="text-xs font-black uppercase text-rose-600 tracking-widest block mb-1">Parola misteriosa svelata</span>
+                                <h3 class="font-black text-4xl text-rose-700 tracking-wide uppercase">LITIGIO</h3>
+                            </div>
+
+                            <div class="space-y-2">
+                                <span class="text-xs font-black uppercase text-slate-400 tracking-wider block text-center">Parole vietate che non andavano pronunciate</span>
+                                <div class="grid grid-cols-1 gap-2">
+                                    <div class="bg-slate-100 border border-slate-300 p-2 rounded-xl font-bold text-slate-700 text-center text-xs uppercase">
+                                        🚫 Fratelli
+                                    </div>
+                                    <div class="bg-slate-100 border border-slate-300 p-2 rounded-xl font-bold text-slate-700 text-center text-xs uppercase">
+                                        🚫 Genitori
+                                    </div>
+                                    <div class="bg-slate-100 border border-slate-300 p-2 rounded-xl font-bold text-slate-700 text-center text-xs uppercase">
+                                        🚫 Urlare
+                                    </div>
+                                    <div class="bg-slate-100 border border-slate-300 p-2 rounded-xl font-bold text-slate-700 text-center text-xs uppercase">
+                                        🚫 Avere ragione
+                                    </div>
+                                    <div class="bg-slate-100 border border-slate-300 p-2 rounded-xl font-bold text-slate-700 text-center text-xs uppercase">
+                                        🚫 Sbagliare
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="resetGameUI()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded-xl border border-slate-300 transition">
+                            <i class="fa-solid fa-lock mr-1"></i> Ripristina schermo per una nuova partita
+                        </button>
+
+                    </div>
+
+                    <!-- Controlli Interattivi Docente (5 Colonne) -->
+                    <div class="md:col-span-5 space-y-3">
+                        
+                        <button onclick="triggerBuzzer()" class="w-full py-4 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-lg shadow-lg border-2 border-rose-400 transition transform active:scale-95 flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-bell text-2xl"></i>
+                            <span>Buzzer parola vietata!</span>
+                        </button>
+
+                        <button onclick="winGame()" class="w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-lg shadow-lg border-2 border-emerald-400 transition transform active:scale-95 flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-trophy text-2xl"></i>
+                            <span>Svela la parola e festeggia!</span>
+                        </button>
+
+                        <!-- REGOLAMENTO TABOO IMPECCABILE -->
+                        <div class="bg-slate-900 text-slate-200 p-4 rounded-2xl border-2 border-slate-700 text-xs leading-relaxed space-y-2">
+                            <div class="flex items-center gap-2 border-b border-slate-800 pb-2 text-rose-400 font-extrabold uppercase tracking-wider text-[11px]">
+                                <i class="fa-solid fa-book-open"></i> Regolamento Ufficiale Taboo
+                            </div>
+                            
+                            <ul class="space-y-1.5 font-medium text-[11px] text-slate-300">
+                                <li class="flex items-start gap-1.5">
+                                    <span class="text-rose-400 font-bold">1.</span>
+                                    <span><strong>Obiettivo:</strong> Far indovinare alla classe la <em>parola segreta</em> entro il tempo limite di <strong>60 secondi</strong>.</span>
+                                </li>
+                                <li class="flex items-start gap-1.5">
+                                    <span class="text-rose-400 font-bold">2.</span>
+                                    <span><strong>Divieti assoluti:</strong> È proibito pronunciare le <strong>5 Parole Taboo</strong>, la parola stessa, derivati o fare mimica/gesti.</span>
+                                </li>
+                                <li class="flex items-start gap-1.5">
+                                    <span class="text-rose-400 font-bold">3.</span>
+                                    <span><strong>Penalità:</strong> In caso di errore, il docente suona il <strong>Buzzer rosso</strong>!</span>
+                                </li>
+                                <li class="flex items-start gap-1.5">
+                                    <span class="text-rose-400 font-bold">4.</span>
+                                    <span><strong>Vittoria:</strong> Se la classe indovina, premi il tasto verde <strong>Svela Parola</strong> per festeggiare e verificare le parole vietate!</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 3: INTRODUZIONE / CONTESTO -->
+        <section class="slide">
+            <div class="max-w-4xl mx-auto w-full text-center space-y-8">
+                
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-rose-100 border-2 border-rose-300 text-rose-900 text-sm font-extrabold uppercase tracking-wider">
+                    <i class="fa-solid fa-heart-crack text-rose-600"></i>
+                    <span>La gestione delle incomprensioni</span>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="font-black text-6xl md:text-7xl lg:text-8xl text-slate-900 tracking-tight leading-tight">
+                        Il kit di pronto soccorso <br>
+                        <span class="text-rose-600">dei conflitti</span>
+                    </h2>
+                    <p class="text-xl md:text-3xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
+                        In tutte le famiglie si discute: la differenza la fa il modo in cui scegliamo di fare la pace.
+                    </p>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="goToSlide(3)" class="px-8 py-4 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xl shadow-xl shadow-rose-600/30 transition transform hover:scale-105 active:scale-95 inline-flex items-center gap-3">
+                        <span>Vai alla riflessione</span>
+                        <i class="fa-solid fa-arrow-right text-xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 4: RIFLESSIONE CON KIT PRONTO SOCCORSO -->
+        <section class="slide">
+            <div class="max-w-5xl mx-auto w-full space-y-4">
+                
+                <div class="border-b-2 border-slate-200 pb-2">
+                    <span class="text-sm font-extrabold text-rose-600 uppercase tracking-wider">Riflessione e Vangelo</span>
+                    <h2 class="font-black text-2xl md:text-3xl text-slate-900">Il kit di Pronto Soccorso della Casa</h2>
+                </div>
+
+                <!-- Struttura Kit a 3 Cerotti -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    
+                    <!-- Cerotto 1: Don Bosco -->
+                    <div class="compact-card p-6 border-l-8 border-l-amber-500 space-y-3">
+                        <div class="flex items-center gap-2 text-amber-900 font-black text-base border-b pb-2">
+                            <i class="fa-solid fa-sun text-amber-500 text-xl"></i>
+                            <h3>Non far tramontare il sole</h3>
+                        </div>
+                        <p class="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
+                            <em>«Non fate mai tramontare il sole sopra la vostra ira»</em>. Le discussioni accadono, ma trascinarsi il rancore per giorni avvelena l'aria di casa.
+                        </p>
+                    </div>
+
+                    <!-- Cerotto 2: Vangelo -->
+                    <div class="compact-card p-6 border-l-8 border-l-rose-600 bg-slate-900 text-white space-y-3">
+                        <div class="flex items-center gap-2 text-rose-400 font-black text-base border-b border-slate-800 pb-2">
+                            <i class="fa-solid fa-rotate-left text-xl"></i>
+                            <h3>Settanta volte sette</h3>
+                        </div>
+                        <blockquote class="text-xs text-slate-200 italic font-medium leading-relaxed">
+                            Pietro chiese a Gesù: "Signore, quante volte dovrò perdonare? Fino a sette volte?". E Gesù gli rispose: "Non ti dico fino a sette, ma fino a settanta volte sette" (Matteo 18).
+                        </blockquote>
+                    </div>
+
+                    <!-- Cerotto 3: La Scelta -->
+                    <div class="compact-card p-6 border-l-8 border-l-emerald-600 space-y-3">
+                        <div class="flex items-center gap-2 text-emerald-900 font-black text-base border-b pb-2">
+                            <i class="fa-solid fa-handshake text-emerald-600 text-xl"></i>
+                            <h3>Fare il primo passo</h3>
+                        </div>
+                        <p class="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
+                            Chiedere scusa o stemperare con un sorriso non significa "aver perso". Significa dimostrare che l'amore per la tua famiglia vale molto più del tuo orgoglio.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="text-center pt-2">
+                    <p class="text-sm font-bold text-slate-700 bg-rose-100/60 border border-rose-300 py-2.5 px-6 rounded-xl inline-block">
+                        <i class="fa-solid fa-heart text-rose-600 mr-2"></i> Diffondi lo splendore della pace!
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 5: SINTESI DI IMPATTO -->
+        <section class="slide">
+            <div class="max-w-3xl mx-auto w-full text-center space-y-6">
+                
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-rose-100 border-2 border-rose-300 text-rose-900 text-sm font-extrabold uppercase tracking-wider">
+                    <i class="fa-solid fa-lightbulb text-rose-600"></i>
+                    <span>Sintesi della giornata</span>
+                </div>
+
+                <div class="compact-card p-10 bg-rose-50/50 border-rose-300 space-y-5">
+                    <div class="w-16 h-16 rounded-2xl bg-rose-600 text-white flex items-center justify-center mx-auto text-2xl shadow-md border-2 border-rose-400">
+                        <i class="fa-solid fa-moon"></i>
+                    </div>
+
+                    <h2 class="font-black text-3xl md:text-5xl text-slate-900 leading-snug">
+                        «Non andare mai a dormire con il muso lungo.»
+                    </h2>
+
+                    <div class="w-16 h-1.5 bg-rose-500 mx-auto rounded-full"></div>
+                    <span class="text-sm font-extrabold text-slate-600 uppercase tracking-widest block">Mercoledì 9 dicembre</span>
+                </div>
+
+                <p class="text-sm font-extrabold text-slate-600">
+                    <i class="fa-solid fa-star text-amber-500 mr-1"></i> In cammino verso la Luce del Natale
+                </p>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Controlli laterali -->
+    <button onclick="prevSlide()" id="prev-btn" class="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white border-2 border-slate-300 text-slate-800 hover:bg-slate-100 flex items-center justify-center text-base transition shadow-md z-40 opacity-30 pointer-events-none">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <button onclick="nextSlide()" id="next-btn" class="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white border-2 border-slate-300 text-slate-800 hover:bg-slate-100 flex items-center justify-center text-base transition shadow-md z-40">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 5;
+        const slidesWrapper = document.getElementById('slides-wrapper');
+        let isMuted = false;
+        let timerSeconds = 60;
+        let timerInterval = null;
+        let isTimerRunning = false;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (isMuted) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'buzzer') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'click') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.04);
+                }
+            } catch (e) {}
+        }
+
+        function resetGameUI() {
+            document.getElementById('taboo-mask').classList.remove('hidden');
+            resetTimer();
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('timer-btn');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                btn.textContent = "Riprendi Timer";
+            } else {
+                if (timerSeconds <= 0) resetTimer();
+                isTimerRunning = true;
+                btn.textContent = "Pausa Timer";
+                timerInterval = setInterval(() => {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                    if (timerSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        btn.textContent = "Tempo Scaduto!";
+                        triggerBuzzer();
+                    }
+                }, 1000);
+            }
+            playSound('click');
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerSeconds = 60;
+            updateTimerDisplay();
+            document.getElementById('timer-btn').textContent = "Avvia Timer";
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            const minStr = minutes < 10 ? `0${minutes}` : `${minutes}`;
+            const secStr = seconds < 10 ? `0${seconds}` : `${seconds}`;
+            document.getElementById('timer-display').textContent = `${minStr}:${secStr}`;
+        }
+
+        function triggerBuzzer() {
+            playSound('buzzer');
+        }
+
+        function winGame() {
+            document.getElementById('taboo-mask').classList.add('hidden');
+            playSound('win');
+            if (isTimerRunning) toggleTimer();
+            confetti({
+                particleCount: 70,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#E11D48', '#10B981', '#0F172A']
+            });
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            currentSlide = index;
+            slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            updateNavUI();
+            playSound('click');
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+
+        function updateNavUI() {
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i === currentSlide) {
+                    dot.classList.add('active-dot');
+                } else {
+                    dot.classList.remove('active-dot');
+                }
+            }
+
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (currentSlide === 0) {
+                prevBtn.classList.add('opacity-30', 'pointer-events-none');
+            } else {
+                prevBtn.classList.remove('opacity-30', 'pointer-events-none');
+            }
+
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.classList.add('opacity-30', 'pointer-events-none');
+            } else {
+                nextBtn.classList.remove('opacity-30', 'pointer-events-none');
+            }
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-icon');
+            if (isMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+            } else {
+                icon.className = 'fa-solid fa-volume-high text-rose-600';
+                playSound('click');
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.onload = function() {
+            updateNavUI();
+            updateTimerDisplay();
+        };
+    </script>
+</body>
+</html>

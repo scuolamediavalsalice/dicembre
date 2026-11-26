@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buongiorno 1° dicembre</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        salesian: {
+                            navy: '#05111e',
+                            slate: '#0d2137',
+                            gold: '#f3c669',
+                            champagne: '#fef3c7',
+                            crimson: '#9f1239',
+                            rose: '#e11d48',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-subtle': 'pulseSubtle 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        },
+                        pulseSubtle: {
+                            '0%, 100%': { opacity: '0.5' },
+                            '50%': { opacity: '0.9' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #05111e;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .glass-panel {
+            background: rgba(13, 33, 55, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(243, 198, 105, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-panel-gold {
+            background: rgba(25, 20, 10, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(243, 198, 105, 0.35);
+            box-shadow: 0 0 40px rgba(243, 198, 105, 0.12);
+        }
+
+        #snow-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            width: 400vw;
+            height: 100vh;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            padding: 2.5rem 5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .text-glow-gold {
+            text-shadow: 0 0 25px rgba(243, 198, 105, 0.4);
+        }
+
+        .active-dot {
+            width: 2.5rem !important;
+            background-color: #f3c669 !important;
+        }
+    </style>
+</head>
+<body class="text-slate-100 font-sans h-full select-none">
+
+    <!-- Canvas per il velo di neve discreto -->
+    <canvas id="snow-canvas"></canvas>
+
+    <!-- Barra superiore di navigazione per la LIM -->
+    <header class="fixed top-0 left-0 w-full px-10 py-5 z-40 flex items-center justify-between bg-gradient-to-b from-salesian-navy/90 to-transparent backdrop-blur-sm pointer-events-auto">
+        <!-- Data e Identità -->
+        <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-salesian-crimson to-salesian-gold flex items-center justify-center shadow-lg shadow-salesian-crimson/20">
+                <i class="fa-solid text-lg text-white fa-house-chimney-window"></i>
+            </div>
+            <div>
+                <span class="text-xs font-medium tracking-widest text-salesian-gold uppercase">Scuola Valsalice</span>
+                <h1 class="font-serif font-bold text-lg tracking-tight text-white">
+                    Martedì 1° dicembre
+                </h1>
+            </div>
+        </div>
+
+        <!-- Indicatori delle diapositive -->
+        <div class="flex items-center gap-3 bg-slate-900/60 px-4 py-2 rounded-full border border-white/10">
+            <button onclick="goToSlide(0)" id="dot-0" class="h-2.5 w-2.5 rounded-full bg-white/30 transition-all duration-300 active-dot" title="Apertura"></button>
+            <button onclick="goToSlide(1)" id="dot-1" class="h-2.5 w-2.5 rounded-full bg-white/30 transition-all duration-300" title="Attività"></button>
+            <button onclick="goToSlide(2)" id="dot-2" class="h-2.5 w-2.5 rounded-full bg-white/30 transition-all duration-300" title="Riflessione"></button>
+            <button onclick="goToSlide(3)" id="dot-3" class="h-2.5 w-2.5 rounded-full bg-white/30 transition-all duration-300" title="Sintesi"></button>
+        </div>
+
+        <!-- Strumenti di controllo -->
+        <div class="flex items-center gap-3">
+            <button id="sound-btn" onclick="toggleSound()" class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 flex items-center justify-center text-slate-300 hover:text-salesian-gold transition" title="Suono">
+                <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+            </button>
+
+            <button onclick="toggleFullscreen()" class="w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 flex items-center justify-center text-slate-300 hover:text-salesian-gold transition" title="Schermo intero">
+                <i class="fa-solid fa-expand"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenitore principale delle diapositive -->
+    <main id="slides-wrapper" class="slides-wrapper">
+
+        <!-- SLIDE 1: COPERTINA E BENVENUTO ESSENZIALE -->
+        <section class="slide pt-28 pb-12">
+            <div class="h-full max-w-5xl mx-auto w-full flex flex-col justify-between items-center text-center">
+                
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-salesian-gold/10 border border-salesian-gold/30 text-salesian-gold text-xs font-medium tracking-widest uppercase">
+                    <i class="fa-solid fa-star text-xs"></i>
+                    <span>Avvento • La famiglia</span>
+                </div>
+
+                <div class="space-y-6 my-auto">
+                    <h2 class="font-serif font-bold text-5xl md:text-7xl lg:text-8xl tracking-tight text-white leading-tight">
+                        Il calendario dell'Avvento <br>
+                        <span class="bg-gradient-to-r from-amber-200 via-salesian-gold to-amber-400 bg-clip-text text-transparent text-glow-gold">
+                            di casa
+                        </span>
+                    </h2>
+                    <p class="text-lg md:text-2xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+                        La riscoperta della famiglia come rifugio sicuro.
+                    </p>
+                </div>
+
+                <button onclick="goToSlide(1)" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-salesian-gold to-amber-500 hover:from-amber-300 hover:to-salesian-gold text-salesian-navy font-semibold text-base shadow-xl shadow-salesian-gold/10 transition transform hover:scale-105 active:scale-95 flex items-center gap-3">
+                    <span>Inizia la riflessione</span>
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: GIOCO INTERATTIVO "INDOVINA CHI" -->
+        <section class="slide pt-28 pb-12">
+            <div class="h-full max-w-6xl mx-auto w-full flex flex-col justify-between">
+                
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-widest text-salesian-gold block mb-1">Dinamica di apertura</span>
+                        <h2 class="font-serif font-bold text-3xl md:text-4xl text-white">
+                            Indovina chi è
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Schede indizi -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-auto">
+                    
+                    <div id="clue-1" onclick="revealClue(1)" class="glass-panel p-8 rounded-3xl cursor-pointer hover:border-salesian-gold/50 transition duration-300 transform hover:-translate-y-1 text-center group">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-salesian-gold">Primo indizio</span>
+                            <i class="fa-solid fa-lock text-slate-500 group-hover:text-salesian-gold transition" id="clue-icon-1"></i>
+                        </div>
+                        <div class="py-4">
+                            <div class="w-14 h-14 rounded-2xl bg-salesian-gold/10 text-salesian-gold flex items-center justify-center mx-auto mb-4 text-xl">
+                                <i class="fa-solid fa-key"></i>
+                            </div>
+                            <p id="clue-text-1" class="text-lg font-light text-slate-300">
+                                Tocca per svelare l'indizio
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="clue-2" onclick="revealClue(2)" class="glass-panel p-8 rounded-3xl cursor-pointer hover:border-salesian-gold/50 transition duration-300 transform hover:-translate-y-1 text-center group">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-salesian-gold">Secondo indizio</span>
+                            <i class="fa-solid fa-lock text-slate-500 group-hover:text-salesian-gold transition" id="clue-icon-2"></i>
+                        </div>
+                        <div class="py-4">
+                            <div class="w-14 h-14 rounded-2xl bg-salesian-gold/10 text-salesian-gold flex items-center justify-center mx-auto mb-4 text-xl">
+                                <i class="fa-solid fa-shirt"></i>
+                            </div>
+                            <p id="clue-text-2" class="text-lg font-light text-slate-300">
+                                Tocca per svelare l'indizio
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="clue-3" onclick="revealClue(3)" class="glass-panel p-8 rounded-3xl cursor-pointer hover:border-salesian-gold/50 transition duration-300 transform hover:-translate-y-1 text-center group">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-salesian-gold">Terzo indizio</span>
+                            <i class="fa-solid fa-lock text-slate-500 group-hover:text-salesian-gold transition" id="clue-icon-3"></i>
+                        </div>
+                        <div class="py-4">
+                            <div class="w-14 h-14 rounded-2xl bg-salesian-gold/10 text-salesian-gold flex items-center justify-center mx-auto mb-4 text-xl">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <p id="clue-text-3" class="text-lg font-light text-slate-300">
+                                Tocca per svelare l'indizio
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pulsanti per le opzioni -->
+                <div class="bg-slate-900/60 rounded-3xl p-6 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <span class="text-sm font-medium text-slate-300">Di chi stiamo parlando?</span>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <button onclick="guessAnswer('La mamma')" class="px-6 py-3 rounded-2xl bg-slate-800/80 hover:bg-salesian-crimson border border-white/10 text-white font-medium transition transform hover:scale-105 active:scale-95">
+                            La mamma
+                        </button>
+
+                        <button onclick="guessAnswer('Il papà')" class="px-6 py-3 rounded-2xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-white font-medium transition transform hover:scale-105 active:scale-95">
+                            Il papà
+                        </button>
+
+                        <button onclick="guessAnswer('La nonna')" class="px-6 py-3 rounded-2xl bg-slate-800/80 hover:bg-amber-700 border border-white/10 text-white font-medium transition transform hover:scale-105 active:scale-95">
+                            La nonna/Il nonno
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 3: LA RIFLESSIONE SALESIANA -->
+        <section class="slide pt-28 pb-12">
+            <div class="h-full max-w-6xl mx-auto w-full flex flex-col justify-between">
+                
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-widest text-salesian-gold block mb-1">Riflessione</span>
+                    <h2 class="font-serif font-bold text-3xl md:text-4xl text-white">
+                        Riconoscersi per sentirsi a casa
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-auto">
+                    
+                    <div class="glass-panel p-8 rounded-3xl space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-salesian-gold/10 text-salesian-gold flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-2xl text-white">
+                            Le abitudini che ci legano
+                        </h3>
+                        <p class="text-slate-300 leading-relaxed font-light text-base md:text-lg">
+                            Riconosciamo al volo le piccole abitudini e i modi di fare di chi vive con noi perché la famiglia è l'ambiente in cui siamo nati e cresciuti. Anche attraverso i dettagli più semplici si esprime la cura quotidiana di chi ci cammina accanto.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-3xl space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-salesian-gold/10 text-salesian-gold flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-house-user"></i>
+                        </div>
+                        <h3 class="font-serif font-bold text-2xl text-white">
+                            Lo spirito di Valdocco
+                        </h3>
+                        <p class="text-slate-300 leading-relaxed font-light text-base md:text-lg">
+                            Don Bosco a Valdocco non ha voluto creare una semplice scuola, ma una vera e propria casa dove sentirsi sempre accolti e compresi. L'Avvento diviene così l'occasione ideale per riscoprire il valore di chi condivide con noi la vita di ogni giorno.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="text-center">
+                    <p class="text-sm font-light text-slate-400">
+                        Preparare il Natale significa anzitutto custodire il calore delle relazioni che viviamo ogni giorno.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 4: SINTESI FINALE SOLENNE -->
+        <section class="slide pt-28 pb-12">
+            <div class="h-full max-w-5xl mx-auto w-full flex flex-col justify-between items-center text-center">
+                
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-salesian-gold/10 border border-salesian-gold/20 text-salesian-gold text-xs font-medium tracking-widest uppercase">
+                    <i class="fa-solid fa-candle-holder"></i>
+                    <span>Pensiero del giorno</span>
+                </div>
+
+                <!-- Card centrale solenne -->
+                <div class="w-full my-auto">
+                    <div class="glass-panel-gold p-10 md:p-16 rounded-3xl relative overflow-hidden">
+                        
+                        <div class="w-16 h-16 rounded-full bg-salesian-gold/10 text-salesian-gold flex items-center justify-center mx-auto mb-8 border border-salesian-gold/30">
+                            <i class="fa-solid fa-quote-left text-2xl"></i>
+                        </div>
+
+                        <h2 class="font-serif font-bold text-3xl md:text-5xl lg:text-6xl text-salesian-champagne leading-tight text-glow-gold mb-8">
+                            «La famiglia è dove la tua storia ha inizio e dove sei sempre a casa.»
+                        </h2>
+
+                        <div class="w-16 h-0.5 bg-salesian-gold/40 mx-auto mb-4"></div>
+                        <span class="text-xs font-medium text-slate-400 uppercase tracking-widest">Martedì 1° dicembre</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                    <i class="fa-solid fa-sparkles text-salesian-gold"></i>
+                    <span>In cammino verso il Natale</span>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Controlli laterali di navigazione per LIM -->
+    <button onclick="prevSlide()" id="prev-btn" class="fixed left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-slate-900/80 hover:bg-salesian-gold border border-white/10 text-white hover:text-salesian-navy flex items-center justify-center text-lg transition-all shadow-2xl z-40 opacity-30 pointer-events-none">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <button onclick="nextSlide()" id="next-btn" class="fixed right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-slate-900/80 hover:bg-salesian-gold border border-white/10 text-white hover:text-salesian-navy flex items-center justify-center text-lg transition-all shadow-2xl z-40">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <!-- Modal di conferma risposta -->
+    <div id="success-modal" class="fixed inset-0 bg-salesian-navy/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-6">
+        <div class="glass-panel-gold max-w-md w-full p-8 rounded-3xl text-center space-y-6">
+            <div class="w-16 h-16 rounded-full bg-salesian-gold/20 text-salesian-gold text-3xl flex items-center justify-center mx-auto border border-salesian-gold/40">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            
+            <div class="space-y-2">
+                <h3 class="font-serif font-bold text-2xl text-salesian-champagne">Risposta esatta</h3>
+                <p id="success-person-name" class="text-slate-300 font-light text-base"></p>
+            </div>
+
+            <button onclick="closeSuccessModal()" class="px-8 py-3 rounded-2xl bg-salesian-gold hover:bg-amber-300 text-salesian-navy font-semibold text-sm transition">
+                Continua
+            </button>
+        </div>
+    </div>
+
+    <!-- Script di gestione della presentazione -->
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 4;
+        const slidesWrapper = document.getElementById('slides-wrapper');
+        
+        const clueData = {
+            1: "Perde le chiavi e il telecomando almeno tre volte al giorno.",
+            2: "Dice sempre: 'Copriti ché fa freddo!'",
+            3: "Se dici di aver fame, prepara da mangiare per un esercito."
+        };
+
+        let isMuted = false;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (isMuted) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'reveal') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(540, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'success') {
+                    const now = audioCtx.currentTime;
+                    [440, 554.37, 659.25].forEach((freq, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.frequency.value = freq;
+                        g.gain.setValueAtTime(0.05, now + idx * 0.12);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.25);
+                        o.start(now + idx * 0.12);
+                        o.stop(now + idx * 0.12 + 0.25);
+                    });
+                } else if (type === 'click') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(380, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.06);
+                }
+            } catch (e) {}
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            currentSlide = index;
+            slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            updateNavUI();
+            playSound('click');
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+
+        function updateNavUI() {
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i === currentSlide) {
+                    dot.classList.add('active-dot');
+                } else {
+                    dot.classList.remove('active-dot');
+                }
+            }
+
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (currentSlide === 0) {
+                prevBtn.classList.add('opacity-30', 'pointer-events-none');
+            } else {
+                prevBtn.classList.remove('opacity-30', 'pointer-events-none');
+            }
+
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.classList.add('opacity-30', 'pointer-events-none');
+            } else {
+                nextBtn.classList.remove('opacity-30', 'pointer-events-none');
+            }
+        }
+
+        function revealClue(num) {
+            const clueTextElem = document.getElementById(`clue-text-${num}`);
+            const clueIcon = document.getElementById(`clue-icon-${num}`);
+            const clueCard = document.getElementById(`clue-${num}`);
+
+            clueTextElem.textContent = clueData[num];
+            clueTextElem.classList.remove('text-slate-300');
+            clueTextElem.classList.add('text-white', 'font-normal');
+            
+            clueIcon.className = 'fa-solid fa-lock-open text-salesian-gold';
+            clueCard.classList.add('border-salesian-gold/50', 'bg-slate-900/80');
+            
+            playSound('reveal');
+        }
+
+        function guessAnswer(person) {
+            playSound('success');
+            
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 70,
+                    spread: 60,
+                    origin: { y: 0.6 },
+                    colors: ['#f3c669', '#ffffff', '#9f1239']
+                });
+            }
+
+            document.getElementById('success-person-name').textContent = `È proprio la risposta corretta.`;
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+            goToSlide(2);
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-icon');
+            if (isMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-500';
+            } else {
+                icon.className = 'fa-solid fa-volume-high text-salesian-gold';
+                playSound('click');
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        window.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        window.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
+        }, false);
+
+        function initSnow() {
+            const canvas = document.getElementById('snow-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const numFlakes = 30;
+            const flakes = [];
+
+            for (let i = 0; i < numFlakes; i++) {
+                flakes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 2 + 1,
+                    d: Math.random() * 0.6 + 0.3,
+                    opacity: Math.random() * 0.4 + 0.1
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < numFlakes; i++) {
+                    const f = flakes[i];
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, false);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${f.opacity})`;
+                    ctx.fill();
+
+                    f.y += f.d;
+                    f.x += Math.sin(f.y * 0.01) * 0.3;
+
+                    if (f.y > height) {
+                        f.y = -10;
+                        f.x = Math.random() * width;
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        window.onload = function() {
+            initSnow();
+            updateNavUI();
+        };
+    </script>
+</body>
+</html>

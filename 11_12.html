@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f3ec">
+    <title>Buongiorno 11 dicembre</title>
+    <style>
+        :root {
+            --paper: #f5f3ec;
+            --ink: #18352e;
+            --muted: #64736b;
+            --pine: #17483b;
+            --pine-dark: #10382f;
+            --berry: #b9474c;
+            --gold: #d6a94f;
+            --line: rgba(24, 53, 46, .15);
+            --white: #fffefa;
+            --serif: Georgia, 'Times New Roman', serif;
+            --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            color: var(--ink);
+            background: var(--paper);
+            font-family: var(--sans);
+            -webkit-font-smoothing: antialiased;
+        }
+        button { font: inherit; }
+        button:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+        .topbar {
+            height: 76px;
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 10;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0 clamp(1.25rem, 4vw, 4rem);
+            border-bottom: 1px solid var(--line);
+            background: rgba(245, 243, 236, .92);
+            backdrop-filter: blur(14px);
+        }
+        .brand { display: flex; align-items: center; gap: .75rem; font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+        .brand-mark { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: var(--paper); background: var(--pine); font-size: .95rem; }
+        .top-date { color: var(--muted); font-size: .78rem; font-weight: 650; letter-spacing: .04em; }
+        .top-actions { display: flex; justify-content: flex-end; align-items: center; gap: .6rem; }
+        .icon-button { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: transparent; cursor: pointer; transition: .2s ease; }
+        .icon-button:hover { color: white; background: var(--pine); border-color: var(--pine); }
+
+        .deck { display: flex; width: 500vw; height: 100vh; transition: transform .65s cubic-bezier(.22, 1, .36, 1); }
+        .slide { position: relative; flex: 0 0 100vw; height: 100vh; overflow-y: auto; display: grid; place-items: center; padding: 104px clamp(1.25rem, 7vw, 7rem) 86px; }
+        .slide::after { content: ''; position: absolute; z-index: -1; width: min(48vw, 600px); aspect-ratio: 1; right: -12vw; bottom: -30vw; border: 1px solid rgba(23, 72, 59, .09); border-radius: 50%; box-shadow: 0 0 0 45px rgba(23, 72, 59, .025), 0 0 0 90px rgba(23, 72, 59, .02); }
+        .content { width: min(100%, 1080px); margin: auto; }
+        .eyebrow { display: flex; align-items: center; gap: .7rem; margin: 0 0 1.2rem; color: var(--berry); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+        .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--berry); }
+        h1, h2, h3, p { margin-top: 0; }
+        h1, h2 { font-family: var(--serif); font-weight: 500; letter-spacing: -.055em; }
+        h1 { max-width: 850px; margin-bottom: 1.4rem; font-size: clamp(3.4rem, 8vw, 7.5rem); line-height: .98; }
+        h1 em { color: var(--pine); font-weight: 500; }
+        h2 { margin-bottom: 1rem; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.02; }
+        h3 { margin-bottom: .55rem; font-size: 1.05rem; letter-spacing: -.02em; }
+        .lead { max-width: 620px; color: var(--muted); font-size: clamp(1rem, 1.5vw, 1.22rem); line-height: 1.7; }
+        .hero { display: grid; grid-template-columns: 1.3fr .7fr; align-items: center; gap: clamp(2rem, 8vw, 8rem); }
+        .hero-copy { padding: 1rem 0; }
+        .hero-stamp { justify-self: center; width: clamp(180px, 23vw, 300px); aspect-ratio: 1; display: grid; place-items: center; border: 1px solid rgba(23, 72, 59, .25); border-radius: 50%; text-align: center; color: var(--pine); transform: rotate(7deg); }
+        .stamp-inner { width: 78%; aspect-ratio: 1; display: grid; align-content: center; justify-items: center; gap: .5rem; border: 1px dashed rgba(23, 72, 59, .3); border-radius: 50%; }
+        .stamp-sprig { font-size: 3rem; line-height: 1; }
+        .stamp-label { max-width: 130px; font-size: .7rem; font-weight: 800; letter-spacing: .13em; line-height: 1.5; text-transform: uppercase; }
+        .hero-footer { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; margin-top: 2.3rem; }
+        .primary-button, .secondary-button { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: .8rem; padding: 0 1.35rem; border: 0; border-radius: 3px; font-size: .9rem; font-weight: 750; cursor: pointer; transition: .2s ease; }
+        .primary-button { color: white; background: var(--pine); }
+        .primary-button:hover { background: var(--pine-dark); transform: translateY(-2px); }
+        .secondary-button { color: var(--ink); background: transparent; border: 1px solid var(--line); }
+        .secondary-button:hover { border-color: var(--pine); }
+        .text-link { color: var(--muted); font-size: .88rem; font-weight: 650; }
+
+        .activity-head { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--line); }
+        .activity-head h2 { margin-bottom: 0; font-size: clamp(2.3rem, 4vw, 4rem); }
+        .timer { flex: 0 0 auto; display: flex; align-items: center; gap: .7rem; }
+        .timer-time { min-width: 78px; font-family: var(--serif); font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+        .timer button { min-height: 42px; padding: 0 .9rem; border: 1px solid var(--line); border-radius: 3px; color: var(--ink); background: transparent; font-size: .8rem; font-weight: 750; cursor: pointer; }
+        .activity-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(1.5rem, 4vw, 4rem); padding-top: 2rem; }
+        .pause-card { min-height: 375px; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(1.5rem, 3vw, 2.5rem); color: var(--white); background: var(--pine); }
+        .pause-number { color: #b9d5c7; font-family: var(--serif); font-size: 4rem; line-height: 1; }
+        .pause-card h3 { max-width: 280px; font-family: var(--serif); font-size: 2rem; font-weight: 500; line-height: 1.05; }
+        .pause-card p { margin-bottom: 0; color: rgba(255,255,255,.75); font-size: .93rem; line-height: 1.65; }
+        .pause-card .primary-button { align-self: flex-start; margin-top: 1.5rem; color: var(--pine); background: var(--paper); }
+        .prompts { display: grid; gap: .6rem; }
+        .prompt-card { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: .9rem; padding: 1rem .9rem; border: 1px solid var(--line); background: rgba(255,254,250,.55); cursor: pointer; transition: .2s ease; }
+        .prompt-card:hover { border-color: rgba(23,72,59,.5); background: var(--white); transform: translateX(3px); }
+        .prompt-number { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: var(--pine); background: #e6eee7; font-family: var(--serif); font-size: 1.1rem; }
+        .prompt-card h3 { margin: 0 0 .2rem; font-size: .96rem; }
+        .prompt-card p { margin: 0; color: var(--muted); font-size: .82rem; line-height: 1.45; }
+        .vote { min-width: 42px; padding: .45rem .5rem; border: 0; border-radius: 3px; color: var(--berry); background: #f7e8e5; font-size: .8rem; font-weight: 800; cursor: pointer; }
+        .memory-answer { min-height: 58px; margin-top: .5rem; padding: 1rem; border-left: 3px solid var(--gold); color: var(--ink); background: rgba(214,169,79,.12); font-size: .88rem; line-height: 1.5; }
+
+        .statement-layout { display: grid; grid-template-columns: 1fr .55fr; align-items: center; gap: 3rem; }
+        .statement { max-width: 820px; font-family: var(--serif); font-size: clamp(2.8rem, 6vw, 6.4rem); line-height: 1.03; letter-spacing: -.055em; }
+        .statement em { color: var(--berry); font-weight: 500; }
+        .side-note { max-width: 250px; justify-self: end; padding: 1.3rem 0 1.3rem 1.3rem; border-left: 1px solid var(--line); color: var(--muted); font-size: .95rem; line-height: 1.7; }
+        .side-note strong { display: block; margin-bottom: .7rem; color: var(--pine); font-size: .72rem; letter-spacing: .13em; text-transform: uppercase; }
+        .three-words { display: flex; gap: clamp(1rem, 3vw, 3rem); margin-top: 3.5rem; padding-top: 1.3rem; border-top: 1px solid var(--line); }
+        .three-words span { color: var(--pine); font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.8rem); }
+        .three-words b { margin-right: .5rem; color: var(--berry); font-family: var(--sans); font-size: .7rem; }
+
+        .bosco-layout { display: grid; grid-template-columns: .72fr 1.28fr; gap: clamp(2rem, 7vw, 7rem); align-items: center; }
+        .year-card { min-height: 330px; display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; color: var(--white); background: var(--berry); }
+        .year-card .year { font-family: var(--serif); font-size: clamp(4rem, 8vw, 7rem); line-height: .9; letter-spacing: -.07em; }
+        .year-card p { max-width: 210px; margin: 1.5rem 0 0; color: rgba(255,255,255,.88); font-size: .9rem; line-height: 1.6; }
+        .facts { display: grid; gap: 1.2rem; margin-top: 1.6rem; }
+        .fact { display: grid; grid-template-columns: 34px 1fr; gap: .8rem; align-items: start; }
+        .fact-mark { color: var(--gold); font-size: 1.15rem; }
+        .fact p { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.65; }
+        .fact strong { color: var(--ink); }
+        .bosco-quote { margin-top: 1.6rem; padding: 1rem 1.2rem; border-left: 2px solid var(--pine); color: var(--pine); font-family: var(--serif); font-size: 1.25rem; line-height: 1.45; }
+
+        .final-card { position: relative; overflow: hidden; padding: clamp(2rem, 5vw, 4.5rem); color: var(--white); background: var(--pine); }
+        .final-card::after { content: '✳'; position: absolute; right: 3%; top: -25%; color: rgba(255,255,255,.06); font-size: 22rem; line-height: 1; }
+        .final-card > * { position: relative; z-index: 1; }
+        .final-card .eyebrow { color: #e5c77e; }
+        .final-card .eyebrow::before { background: #e5c77e; }
+        .final-card h2 { max-width: 780px; margin: .6rem 0 2rem; font-size: clamp(2.5rem, 5.5vw, 5rem); }
+        .challenge { max-width: 740px; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,.28); color: rgba(255,255,255,.78); font-size: .93rem; line-height: 1.7; }
+        .challenge strong { color: white; }
+        .challenge-question { display: block; margin: .45rem 0; color: #f0d58f; font-family: var(--serif); font-size: clamp(1.35rem, 2.5vw, 2rem); }
+        .closing { margin: 1.7rem 0 0; color: rgba(255,255,255,.55); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+
+        .bottom-nav { position: fixed; z-index: 11; inset: auto 0 0; height: 66px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(1.25rem, 4vw, 4rem); border-top: 1px solid var(--line); background: rgba(245,243,236,.94); backdrop-filter: blur(14px); }
+        .nav-button { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); background: transparent; cursor: pointer; transition: .2s; }
+        .nav-button:hover:not(:disabled) { color: white; background: var(--pine); border-color: var(--pine); }
+        .nav-button:disabled { opacity: .28; cursor: default; }
+        .progress { display: flex; align-items: center; gap: .55rem; }
+        .dot { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 10px; background: rgba(24,53,46,.23); cursor: pointer; transition: .25s; }
+        .dot.active { width: 26px; background: var(--berry); }
+        .page-count { min-width: 46px; margin-left: .45rem; color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
+
+        @media (max-width: 760px) {
+            body { overflow: hidden; }
+            .topbar { height: 62px; grid-template-columns: 1fr auto; gap: .5rem; padding-inline: 1rem; }
+            .brand { font-size: .67rem; }
+            .top-date { display: none; }
+            .top-actions { gap: .35rem; }
+            .icon-button { width: 34px; height: 34px; }
+            .slide { align-items: start; padding: 88px 1.25rem 84px; }
+            .hero, .statement-layout, .bosco-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+            .hero-stamp { display: none; }
+            h1 { font-size: clamp(3.5rem, 16vw, 6rem); }
+            .hero-footer { gap: 1rem; margin-top: 1.5rem; }
+            .activity-head { align-items: start; flex-direction: column; gap: 1rem; }
+            .activity-head h2 { font-size: 2.65rem; }
+            .timer { align-self: stretch; }
+            .activity-grid { grid-template-columns: 1fr; gap: 1rem; padding-top: 1rem; }
+            .pause-card { min-height: 0; gap: 1rem; padding: 1.3rem; }
+            .pause-number { font-size: 2.5rem; }
+            .pause-card h3 { font-size: 1.6rem; }
+            .pause-card .primary-button { margin-top: .5rem; }
+            .prompts { gap: .5rem; }
+            .prompt-card { grid-template-columns: 32px 1fr auto; gap: .65rem; padding: .75rem .65rem; }
+            .prompt-number { width: 29px; height: 29px; }
+            .prompt-card h3 { font-size: .87rem; }
+            .prompt-card p { font-size: .75rem; }
+            .statement-layout { gap: 1.3rem; }
+            .statement { font-size: clamp(3rem, 12vw, 5rem); }
+            .side-note { justify-self: start; max-width: none; padding: .6rem 0 .6rem 1rem; }
+            .three-words { gap: 1rem; margin-top: 1.8rem; }
+            .three-words span { font-size: 1.1rem; }
+            .year-card { min-height: 170px; padding: 1.4rem; }
+            .year-card .year { font-size: 4rem; }
+            .year-card p { max-width: 300px; margin-top: .6rem; }
+            .facts { gap: .8rem; margin-top: 1rem; }
+            .fact p { font-size: .86rem; }
+            .bosco-quote { margin-top: 1rem; font-size: 1.1rem; }
+            .final-card { padding: 2rem 1.35rem; }
+            .final-card::after { right: -15%; top: -8%; font-size: 14rem; }
+            .final-card h2 { font-size: clamp(2.5rem, 11vw, 4.3rem); }
+            .bottom-nav { height: 58px; padding-inline: 1rem; }
+            .nav-button { width: 38px; height: 38px; }
+            .page-count { font-size: .7rem; }
+        }
+        @media (max-width: 390px) {
+            .slide { padding-inline: 1rem; }
+            .prompt-card p { display: none; }
+            .primary-button, .secondary-button { min-height: 46px; padding-inline: 1rem; font-size: .82rem; }
+            .three-words { justify-content: space-between; gap: .4rem; }
+            .three-words span { font-size: .98rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">✳</span> Venerdì 11 dicembre</div>
+        <div class="top-date">Scuola Valsalice</div>
+        <div class="top-actions">
+            <button class="icon-button" id="sound-btn" onclick="toggleSound()" aria-label="Attiva o disattiva i suoni" title="Audio"><span id="sound-icon" aria-hidden="true">♫</span></button>
+            <button class="icon-button" onclick="toggleFullscreen()" aria-label="Attiva o disattiva schermo intero" title="Schermo intero"><span aria-hidden="true">⛶</span></button>
+        </div>
+    </header>
+
+    <main class="deck" id="slides-wrapper">
+        <section class="slide" aria-label="Introduzione">
+            <div class="content hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Un Natale da ricordare</p>
+                    <h1>Il Natale<br>comincia dalle <em>storie.</em></h1>
+                    <p class="lead">Ogni famiglia ha un rito, una risata, una frase che torna. Oggi facciamo spazio ai ricordi che ci fanno sentire a casa.</p>
+                    <div class="hero-footer">
+                        <button class="primary-button" onclick="goToSlide(1)">Cominciamo <span aria-hidden="true">→</span></button>
+                    </div>
+                </div>
+                <div class="hero-stamp" aria-hidden="true"><div class="stamp-inner"><span class="stamp-sprig">✳</span><span class="stamp-label">ascolta · racconta · custodisci</span></div></div>
+            </div>
+        </section>
+
+        <section class="slide" aria-label="Attività: i ricordi di Natale">
+            <div class="content">
+                <div class="activity-head">
+                    <div><p class="eyebrow">Tappa 1 · Insieme</p><h2>Qual è il tuo<br>ricordo di Natale?</h2></div>
+                    <div class="timer"><span class="timer-time" id="timer-display">01:30</span><button onclick="toggleTimer()" id="timer-btn">Avvia il tempo</button></div>
+                </div>
+                <div class="activity-grid">
+                    <div class="pause-card">
+                        <span class="pause-number">10″</span>
+                        <div><h3>Prima, un momento per ricordare.</h3><p>Chiudi gli occhi. Pensa a un Natale buffo, speciale o sorprendente vissuto a casa tua.</p></div>
+                        <button class="primary-button" onclick="endSilencePhase()">Sono pronto <span aria-hidden="true">→</span></button>
+                    </div>
+                    <div class="prompts">
+                        <div class="prompt-card" onclick="revealMemory(1)"><span class="prompt-number">1</span><div><h3>Il piatto o il rito speciale</h3><p>Che cosa si mangia o si fa a casa tua?</p></div><button class="vote" onclick="event.stopPropagation(); addVote(1)" aria-label="Vota il ricordo del piatto">♡ <span id="count-1">0</span></button></div>
+                        <div class="prompt-card" onclick="revealMemory(2)"><span class="prompt-number">2</span><div><h3>La storia che fa ridere</h3><p>Quale episodio viene raccontato ogni anno?</p></div><button class="vote" onclick="event.stopPropagation(); addVote(2)" aria-label="Vota il ricordo divertente">♡ <span id="count-2">0</span></button></div>
+                        <div class="prompt-card" onclick="revealMemory(3)"><span class="prompt-number">3</span><div><h3>Le parole dei nonni</h3><p>Com’era il Natale quando erano ragazzi?</p></div><button class="vote" onclick="event.stopPropagation(); addVote(3)" aria-label="Vota il ricordo dei nonni">♡ <span id="count-3">0</span></button></div>
+                        <div class="memory-answer" id="memory-display-box" aria-live="polite">Scegli una domanda: ascoltiamo senza interrompere.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" aria-label="Il valore delle tradizioni">
+            <div class="content">
+                <p class="eyebrow">Tappa 2 · Il significato</p>
+                <div class="statement-layout">
+                    <div class="statement">Le tradizioni non sono cose vecchie. Sono <em>radici vive.</em></div>
+                    <aside class="side-note"><strong>I ricordi</strong>Ci aiutano a capire da dove veniamo e ci danno qualcosa di bello da condividere, anche mentre cambiamo.</aside>
+                </div>
+                <div class="three-words"><span><b>01</b>Ricorda</span><span><b>02</b>Racconta</span><span><b>03</b>Custodisci</span></div>
+            </div>
+        </section>
+
+        <section class="slide" aria-label="Don Bosco e le sue radici">
+            <div class="content bosco-layout">
+                <div class="year-card"><span class="year">1815</span><p>L’anno in cui nacque Giovanni Bosco, ai Becchi, in Piemonte.</p></div>
+                <div>
+                    <p class="eyebrow">Tappa 3 · Uno sguardo salesiano</p>
+                    <h2>Le radici<br>di Don Bosco</h2>
+                    <div class="facts">
+                        <div class="fact"><span class="fact-mark">✳</span><p><strong>La sua casa era ai Becchi.</strong> Da bambino crebbe in una famiglia contadina, insieme ai fratelli.</p></div>
+                        <div class="fact"><span class="fact-mark">✳</span><p><strong>Mamma Margherita</strong> gli trasmise la fede, il coraggio e l’importanza di aiutarsi.</p></div>
+                        <div class="fact"><span class="fact-mark">✳</span><p>Da adulto portò quei valori all’Oratorio di Torino, dedicando la vita ai giovani, soprattutto a chi aveva più bisogno.</p></div>
+                    </div>
+                    <div class="bosco-quote">Le cose importanti che impariamo da piccoli possono diventare un bene per tanti.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" aria-label="La sfida di stasera">
+            <div class="content">
+                <div class="final-card">
+                    <p class="eyebrow">Tappa 4 · Portalo con te</p>
+                    <h2>Una domanda.<br>Una storia.<br>Un legame in più.</h2>
+                    <div class="challenge"><strong>La sfida di stasera</strong><span class="challenge-question">«Com’era il Natale quando avevi la mia età?»</span>Chiedilo a un nonno o a una persona cara. Ascolta davvero: metti via il telefono e lascia spazio alla sua storia.</div>
+                    <p class="closing">Le storie di famiglia sono un regalo che si tramanda.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navigazione delle slide">
+        <button class="nav-button" onclick="prevSlide()" id="prev-btn" aria-label="Slide precedente">←</button>
+        <div class="progress" aria-label="Avanzamento">
+            <button class="dot active" onclick="goToSlide(0)" aria-label="Vai alla slide 1"></button>
+            <button class="dot" onclick="goToSlide(1)" aria-label="Vai alla slide 2"></button>
+            <button class="dot" onclick="goToSlide(2)" aria-label="Vai alla slide 3"></button>
+            <button class="dot" onclick="goToSlide(3)" aria-label="Vai alla slide 4"></button>
+            <button class="dot" onclick="goToSlide(4)" aria-label="Vai alla slide 5"></button>
+            <span class="page-count" id="page-count">01 / 05</span>
+        </div>
+        <button class="nav-button" onclick="nextSlide()" id="next-btn" aria-label="Slide successiva">→</button>
+    </nav>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 5;
+        const slidesWrapper = document.getElementById('slides-wrapper');
+        let isMuted = false;
+        let timerSeconds = 90;
+        let timerInterval = null;
+        let isTimerRunning = false;
+        const votes = { 1: 0, 2: 0, 3: 0 };
+        let audioCtx;
+
+        function playSound(frequency = 520) {
+            if (isMuted) return;
+            try {
+                audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const oscillator = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                oscillator.connect(gain);
+                gain.connect(audioCtx.destination);
+                oscillator.frequency.value = frequency;
+                gain.gain.setValueAtTime(.035, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + .12);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + .12);
+            } catch (error) { /* Audio non disponibile: i controlli restano utilizzabili. */ }
+        }
+
+        function endSilencePhase() {
+            const button = document.querySelector('.pause-card .primary-button');
+            button.innerHTML = 'Ricordo pronto ✓';
+            button.disabled = true;
+            button.style.opacity = '.72';
+            playSound(660);
+        }
+
+        function revealMemory(index) {
+            const messages = {
+                1: 'Racconta un piatto o un piccolo rito che rende speciale il Natale nella tua famiglia.',
+                2: 'Condividi un episodio divertente: raccontalo con gentilezza, senza mettere in imbarazzo nessuno.',
+                3: 'Chiedi a una persona più grande com’erano le feste quando era ragazza o ragazzo.'
+            };
+            document.getElementById('memory-display-box').textContent = messages[index];
+            playSound(580);
+        }
+
+        function addVote(cardId) {
+            votes[cardId]++;
+            document.getElementById(`count-${cardId}`).textContent = votes[cardId];
+            playSound(460);
+        }
+
+        function toggleTimer() {
+            const button = document.getElementById('timer-btn');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                button.textContent = 'Riprendi';
+                return;
+            }
+            if (timerSeconds <= 0) timerSeconds = 90;
+            isTimerRunning = true;
+            button.textContent = 'Pausa';
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    button.textContent = 'Tempo finito';
+                    playSound(740);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timer-display').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            currentSlide = index;
+            slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            updateNavUI();
+            playSound();
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1); }
+        function prevSlide() { if (currentSlide > 0) goToSlide(currentSlide - 1); }
+
+        function updateNavUI() {
+            document.querySelectorAll('.dot').forEach((dot, index) => dot.classList.toggle('active', index === currentSlide));
+            document.getElementById('page-count').textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            document.getElementById('sound-icon').textContent = isMuted ? '×' : '♫';
+            document.getElementById('sound-btn').setAttribute('aria-label', isMuted ? 'Attiva i suoni' : 'Disattiva i suoni');
+            if (!isMuted) playSound();
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+            else document.exitFullscreen?.();
+        }
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight' || event.key === ' ') { event.preventDefault(); nextSlide(); }
+            else if (event.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>

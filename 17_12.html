@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#172d3a">
+    <meta name="description" content="Buongiorno salesiano per la Scuola Valsalice: il dono del tempo e il valore della presenza.">
+    <title>Buongiorno 17 dicembre</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --night: #172d3a;
+            --deep: #203f48;
+            --cream: #f5f0e5;
+            --paper: #fffdf7;
+            --coral: #d46b50;
+            --gold: #f1c86c;
+            --muted: #65736f;
+            --serif: Georgia, 'Times New Roman', serif;
+            --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        * { box-sizing: border-box; }
+        html { width: 100%; max-width: 100%; overflow-x: clip; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+        body { width: 100%; max-width: 100%; margin: 0; overflow-x: clip; color: var(--night); background: var(--cream); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+        a { color: inherit; }
+        a:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+        .skip-link { position: fixed; z-index: 20; top: .75rem; left: .75rem; padding: .75rem 1rem; background: white; transform: translateY(-150%); }
+        .skip-link:focus { transform: translateY(0); }
+        .slide { position: relative; width: 100%; height: 100svh; min-height: 560px; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
+        .slide-inner { width: min(100%, 1280px); height: 100%; margin-inline: auto; padding: clamp(1.5rem, 4.5vh, 3.5rem) clamp(2rem, 7vw, 7rem); }
+        .eyebrow { display: flex; align-items: center; gap: .7rem; margin: 0 0 .8rem; color: var(--coral); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+        .eyebrow::before { width: 22px; height: 2px; background: currentColor; content: ''; }
+        h1, h2, h3, p { margin-top: 0; }
+        h1, h2, blockquote { font-family: var(--serif); font-weight: 400; letter-spacing: -.055em; }
+        .slide-index { position: absolute; right: clamp(2rem, 7vw, 7rem); bottom: 1.25rem; color: var(--muted); font-size: .67rem; font-weight: 800; letter-spacing: .12em; }
+        .slide-index a { text-decoration: none; }
+        .slide-index a:hover { color: var(--coral); }
+        main { display: flex; flex-direction: column; }
+        .activity { order: 1; }
+        .cover { order: 2; color: var(--paper); background: var(--night); }
+        .reflection { order: 3; }
+        .closing { order: 4; }
+        .cover .slide-inner { display: flex; flex-direction: column; justify-content: space-between; }
+        .cover-top, .cover-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: rgba(255,253,247,.7); font-size: .7rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+        .cover-top strong, .cover-bottom span:last-child { color: var(--gold); }
+        .cover-main { display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: clamp(2rem, 7vw, 7rem); }
+        .cover .eyebrow { color: var(--gold); }
+        .cover h1 { max-width: 760px; margin: 0; font-size: clamp(4.5rem, 9vw, 9rem); line-height: .84; }
+        .cover h1 em { color: var(--gold); font-weight: 400; }
+        .cover-theme { max-width: 560px; margin: 1.7rem 0 0; color: rgba(255,253,247,.77); font-size: clamp(.95rem, 1.5vw, 1.2rem); line-height: 1.6; }
+        .cover-theme strong { color: white; }
+        .lantern-art { width: min(100%, 400px); justify-self: center; filter: drop-shadow(0 22px 28px rgba(0,0,0,.22)); }
+        .activity { background: var(--cream); }
+        .activity-meta { margin: 0 0 1rem; color: var(--muted); font-size: .75rem; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+        .activity .slide-inner { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: clamp(5rem, 12vh, 7rem); padding-bottom: 4rem; }
+        .activity-meta { position: absolute; top: clamp(1.5rem, 5vh, 3rem); left: clamp(2rem, 7vw, 7rem); right: clamp(2rem, 7vw, 7rem); margin: 0; text-align: center; }
+        .activity > .slide-inner > .eyebrow { justify-content: center; }
+        .activity .slide-heading { width: 100%; justify-content: center; align-items: center; gap: 1rem; text-align: center; }
+        .activity .slide-heading h2 { font-size: clamp(3rem, 6vw, 5.5rem); }
+        .activity-prompt { width: min(100%, 850px); text-align: center; }
+        .reveal-button { align-self: center; }
+        .reveal-card { width: min(100%, 850px); }
+        .reflection .slide-inner { display: flex; flex-direction: column; justify-content: center; }
+        .activity-prompt { max-width: 850px; margin: 0 0 1.5rem; padding: clamp(1.5rem, 4vw, 3rem); background: var(--paper); border-left: 5px solid var(--gold); }
+        .activity-prompt p { margin: 0; font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.25; }
+        .reveal-button { align-self: center; padding: .9rem 1.25rem; border: 0; color: var(--paper); background: var(--deep); font: 750 .9rem var(--sans); cursor: pointer; }
+        .reveal-button:hover, .reveal-button:focus-visible { background: var(--coral); }
+        .reveal-button:focus-visible { outline: 3px solid var(--night); outline-offset: 3px; }
+        .reveal-card { max-width: 850px; margin-top: 1rem; padding: 1.2rem 1.5rem; color: var(--paper); background: var(--deep); }
+        .reveal-card[hidden] { display: none; }
+        .reveal-card strong { color: var(--gold); }
+        .reveal-card p { margin: .35rem 0 0; line-height: 1.6; }
+        .slide-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: clamp(1rem, 2.5vh, 1.7rem); }
+        .slide-heading h2 { margin: 0; font-size: clamp(2.6rem, 5.3vw, 5.2rem); line-height: .92; }
+        .time { flex: 0 0 auto; margin: 0 0 .25rem; color: var(--coral); font-family: var(--serif); font-size: 1.25rem; }
+        .activity-intro { max-width: 920px; margin: 0 0 clamp(1rem, 2.5vh, 1.8rem); color: var(--muted); font-size: clamp(.92rem, 1.35vw, 1.08rem); line-height: 1.6; }
+        .game-board { display: grid; grid-template-columns: .86fr 1.14fr; align-items: stretch; gap: clamp(1rem, 2.2vw, 2rem); }
+        .game-visual { position: relative; display: grid; min-height: 230px; place-items: center; overflow: hidden; background: var(--deep); }
+        .game-visual::before, .game-visual::after { position: absolute; width: 180px; aspect-ratio: 1; border: 1px solid rgba(241,200,108,.3); border-radius: 50%; content: ''; }
+        .game-visual::after { width: 260px; }
+        .game-visual svg { position: relative; z-index: 1; width: min(78%, 250px); }
+        .game-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+        .step { display: flex; flex-direction: column; justify-content: center; min-height: 105px; padding: 1rem 1.1rem; background: var(--paper); border-top: 3px solid var(--gold); }
+        .step b { margin-bottom: .35rem; color: var(--coral); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; }
+        .step p { margin: 0; color: var(--night); font-size: clamp(.83rem, 1.1vw, .96rem); line-height: 1.5; }
+        .game-rule { margin: 1rem 0 0; padding: .85rem 1.1rem; border-left: 3px solid var(--coral); color: var(--muted); background: var(--paper); font-size: clamp(.82rem, 1.1vw, .95rem); line-height: 1.5; }
+        .game-rule strong { color: var(--night); }
+        .reflection { color: var(--night); background: var(--gold); }
+        .reflection .eyebrow, .reflection .time { color: var(--coral); }
+        .reflection .slide-heading h2 { max-width: 850px; }
+        .reflection-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: clamp(1rem, 2vw, 1.6rem); }
+        .reflection-card { min-width: 0; padding: clamp(1.4rem, 3vw, 2.5rem); color: var(--night); background: var(--paper); }
+        .card-label { margin-bottom: .9rem; color: var(--coral); font-size: .67rem; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+        .reflection-card h3 { margin-bottom: .8rem; color: var(--deep); font-family: var(--serif); font-size: clamp(1.6rem, 2.7vw, 2.55rem); font-weight: 400; letter-spacing: -.04em; line-height: 1.05; }
+        .reflection-card p { margin-bottom: 0; color: var(--muted); font-size: clamp(.88rem, 1.15vw, 1rem); line-height: 1.7; }
+        .bible-quote { display: block; margin-top: 1rem; padding-top: .8rem; border-top: 1px solid #e8e1d4; color: var(--deep); font-family: var(--serif); font-size: 1rem; }
+        .reflection-points { display: grid; gap: .75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+        .reflection-points li { display: grid; grid-template-columns: 1.5rem 1fr; gap: .55rem; color: var(--night); font-size: clamp(.85rem, 1.1vw, .97rem); line-height: 1.5; }
+        .reflection-points li::before { color: var(--coral); font-weight: 850; content: '✦'; }
+        .closing { color: var(--paper); background: var(--deep); }
+        .closing .slide-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .closing .eyebrow { color: var(--gold); }
+        .closing-mark { display: grid; width: clamp(4rem, 8vw, 6.5rem); aspect-ratio: 1; margin: .4rem auto 1rem; place-items: center; border: 1px solid rgba(255,253,247,.35); border-radius: 50%; font-size: clamp(2rem, 4vw, 3rem); }
+        .closing blockquote { max-width: 1000px; margin: .4rem auto 1.2rem; font-size: clamp(3rem, 8vw, 7.5rem); line-height: .96; }
+        .closing-note { margin: 0; color: rgba(255,253,247,.72); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+        .closing .slide-index { color: rgba(255,253,247,.65); }
+        @media (max-width: 700px) {
+            html { scroll-snap-type: y proximity; }
+            .slide { height: auto; min-height: 100svh; overflow: visible; }
+            .slide-inner { min-height: 100svh; height: auto; padding: 2rem 1.2rem 3.5rem; }
+            .cover-main { grid-template-columns: 1fr; gap: .5rem; }
+            .cover h1 { font-size: clamp(4rem, 17vw, 6.5rem); }
+            .cover-theme { margin-top: 1.1rem; }
+            .lantern-art { width: min(62%, 230px); }
+            .cover-bottom { padding-top: 1rem; }
+            .activity .slide-inner, .reflection .slide-inner { justify-content: flex-start; padding-top: 5rem; }
+            .activity .slide-inner { justify-content: center; padding-bottom: 3.5rem; }
+            .activity-meta { top: 1.5rem; left: 1.2rem; right: 1.2rem; font-size: .65rem; }
+            .activity .slide-heading { align-items: center; gap: .5rem; }
+            .activity .slide-heading h2 { font-size: clamp(2.5rem, 10vw, 4rem); }
+            .slide-heading { align-items: start; gap: 1rem; }
+            .slide-heading h2 { font-size: clamp(2.4rem, 10vw, 4rem); }
+            .time { font-size: 1rem; }
+            .game-board, .reflection-grid { grid-template-columns: 1fr; }
+            .game-visual { min-height: 190px; }
+            .game-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .closing blockquote { font-size: clamp(3rem, 12vw, 5rem); }
+        }
+        @media (max-width: 390px) {
+            .cover-top, .cover-bottom { font-size: .58rem; }
+            .game-steps { grid-template-columns: 1fr; }
+            .step { min-height: auto; }
+        }
+        @media (max-height: 650px) and (min-width: 701px) {
+            .slide-inner { padding-top: 1.1rem; padding-bottom: 2.2rem; }
+            .activity .slide-inner, .reflection .slide-inner { padding-top: 1rem; padding-bottom: 2rem; }
+            .game-visual { min-height: 185px; }
+            .step { min-height: 85px; padding: .7rem .9rem; }
+            .reflection-card { padding: 1.2rem 1.5rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+    <main id="contenuto">
+        <section class="slide cover" id="inizio" aria-labelledby="titolo">
+            <div class="slide-inner">
+                <div class="cover-top"><span></span><strong></strong></div>
+                <div class="cover-main">
+                    <div>
+                        <p class="eyebrow">Il regalo che non si compra</p>
+                        <h1 id="titolo">Il dono <em>del tempo.</em></h1>
+                        <p class="cover-theme"><strong>Il tema di oggi</strong><br>Oltre il consumismo: la presenza vale più di un oggetto. Regalare tempo significa esserci davvero, con attenzione.</p>
+                    </div>
+                    <svg class="lantern-art" viewBox="0 0 360 360" role="img" aria-label="Una clessidra dorata rappresenta il tempo donato">
+                        <defs><radialGradient id="glow"><stop stop-color="#f8d77d" stop-opacity=".5"/><stop offset="1" stop-color="#f8d77d" stop-opacity="0"/></radialGradient><linearGradient id="glass"><stop stop-color="#fff1bc" stop-opacity=".9"/><stop offset=".5" stop-color="#f1c86c" stop-opacity=".55"/><stop offset="1" stop-color="#fff1bc" stop-opacity=".9"/></linearGradient></defs>
+                        <circle cx="180" cy="180" r="164" fill="url(#glow)"/><path d="M112 74h136M112 286h136" stroke="#f1c86c" stroke-width="12" stroke-linecap="round"/><path d="M124 82c0 47 42 63 56 98-14 35-56 51-56 98h112c0-47-42-63-56-98 14-35 56-51 56-98z" fill="url(#glass)" stroke="#f1c86c" stroke-width="7"/><path d="M145 105h70c-3 29-25 42-35 63-10-21-32-34-35-63zm35 99c10 21 32 34 35 63h-70c3-29 25-42 35-63z" fill="#f1c86c"/><circle cx="67" cy="79" r="3" fill="#fff0c1"/><circle cx="291" cy="91" r="4" fill="#fff0c1"/><circle cx="277" cy="258" r="3" fill="#fff0c1"/><circle cx="78" cy="264" r="4" fill="#fff0c1"/>
+                    </svg>
+                </div>
+                <div class="cover-bottom"><span>Avvento</span><span></span></div>
+            </div>
+        </section>
+
+        <section class="slide activity" id="gioco" aria-labelledby="gioco-titolo">
+            <div class="slide-inner">
+                <p class="activity-meta">Scuola Valsalice · Giovedì 17 dicembre</p>
+                <div class="slide-heading"><h2 id="gioco-titolo">Un regalo<br>al volo!</h2></div>
+                <div class="activity-prompt"><p>Pensate a un regalo che vorreste donare o ricevere: qual è la prima cosa che vi viene in mente?</p></div>
+                <button class="reveal-button" id="reveal-button" type="button" aria-expanded="false" aria-controls="reveal-card">E adesso… sveliamo un’altra idea</button>
+                <div class="reveal-card" id="reveal-card" tabindex="-1" hidden>
+                    <strong>E se il regalo fosse il tempo?</strong>
+                    <p>La nostra attenzione può essere il dono più bello.</p>
+                </div>
+            </div>
+            <div class="slide-index"><a href="#gioco">01</a> — <a href="#inizio">02 →</a></div>
+        </section>
+
+        <section class="slide reflection" id="riflessione" aria-labelledby="riflessione-titolo">
+            <div class="slide-inner">
+                <p class="eyebrow">02 · Riflessione salesiana</p>
+                <div class="slide-heading"><h2 id="riflessione-titolo"><p class="time"></p></div>
+                <div class="reflection-grid">
+                    <article class="reflection-card">
+                        <p class="card-label">Oltre i regali materiali</p>
+                        <h3>La presenza vale più di un oggetto.</h3>
+                        <p>In questi giorni siamo bombardati dalla pubblicità dei regali materiali. Ma il regalo più grande che possiamo fare a chi amiamo non si compra nei negozi: è il nostro tempo. Regalare tempo vuol dire ascoltare, esserci e dedicare attenzione vera.</p>
+                        <span class="bible-quote">Un dono che non si scarta: si vive insieme.</span>
+                    </article>
+                    <article class="reflection-card">
+                        <p class="card-label">Le parole di Don Bosco</p>
+                        <h3>Amare facendolo sentire.</h3>
+                        <p>Don Bosco diceva: «Non basta amare i giovani, è necessario che essi si accorgano di essere amati». E ci si accorge di essere amati quando qualcuno ci regala il suo tempo e la sua attenzione.</p>
+                        <ul class="reflection-points">
+                            <li>A chi posso dedicare ascolto oggi?</li>
+                            <li>Quando posso mettere via il telefono e esserci davvero?</li>
+                            <li>Quale momento posso condividere, senza fretta?</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+            <div class="slide-index"><a href="#riflessione">03</a> — <a href="#frase-finale">04 →</a></div>
+        </section>
+
+        <section class="slide closing" id="frase-finale" aria-labelledby="titolo-finale">
+            <div class="slide-inner">
+                <p class="eyebrow">La frase da portare con noi</p>
+                <div class="closing-mark" aria-hidden="true">◷</div>
+                <blockquote id="titolo-finale">«Il regalo più prezioso che puoi fare a qualcuno è la tua attenzione.»</blockquote>
+                <p class="closing-note">Oggi regala il tuo tempo: esserci è già un dono.</p>
+            </div>
+            <div class="slide-index"><a href="#frase-finale">04</a> — <a href="#gioco">Torna all’inizio ↑</a></div>
+        </section>
+    </main>
+    <script>
+        const revealButton = document.getElementById('reveal-button');
+        const revealCard = document.getElementById('reveal-card');
+        revealButton.addEventListener('click', () => {
+            revealCard.hidden = false;
+            revealButton.setAttribute('aria-expanded', 'true');
+            revealButton.textContent = 'Il regalo svelato';
+            revealCard.focus();
+        });
+    </script>
+</body>
+</html>

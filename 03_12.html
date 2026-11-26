@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buongiorno 3 dicembre</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        starlight: {
+                            bg: '#F8FAFC',
+                            night: '#0F172A',
+                            gold: '#D97706',
+                            goldLight: '#FEF3C7',
+                            goldBorder: '#FCD34D',
+                            glow: '#FFFBEB',
+                            slate: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .starlight-card {
+            background: #FFFFFF;
+            border: 3px solid #E2E8F0;
+            box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.06);
+            border-radius: 1.5rem;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .starlight-card:hover {
+            border-color: #FCD34D;
+            box-shadow: 0 12px 24px -4px rgba(217, 119, 6, 0.15);
+        }
+
+        .slides-wrapper {
+            display: flex;
+            width: 400vw;
+            height: 100vh;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            padding: 5rem 2.5rem 1.5rem 2.5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Scale calibrato al 110% per un equilibrio visivo ideale */
+        .slide-content-zoom {
+            zoom: 1.10;
+        }
+
+        @supports not (zoom: 1.10) {
+            .slide-content-zoom {
+                transform: scale(1.10);
+                transform-origin: center center;
+            }
+        }
+
+        .active-dot {
+            width: 2.5rem !important;
+            background-color: #D97706 !important;
+        }
+
+        @keyframes starGlow {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.85; }
+        }
+
+        .star-pulse {
+            animation: starGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-800 font-sans h-full select-none">
+
+    <!-- Header LIM -->
+    <header class="fixed top-0 left-0 w-full px-8 py-3.5 z-40 flex items-center justify-between bg-white border-b-2 border-slate-200 shadow-sm">
+        <div class="flex items-center space-x-4">
+            <div class="w-11 h-11 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center text-xl font-bold shadow-md shadow-slate-900/20">
+                <i class="fa-solid fa-star star-pulse"></i>
+            </div>
+            <div class="flex items-center gap-3">
+                <h1 class="font-extrabold text-xl md:text-2xl text-slate-900">Giovedì 3 dicembre</h1>
+                <span class="text-sm font-bold bg-amber-100 text-amber-900 px-3 py-1 rounded-lg border border-amber-300">Scuola Valsalice </span>
+            </div>
+        </div>
+
+        <!-- Indicatori slide -->
+        <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-full border border-slate-300">
+            <button onclick="goToSlide(0)" id="dot-0" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all active-dot"></button>
+            <button onclick="goToSlide(1)" id="dot-1" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+            <button onclick="goToSlide(2)" id="dot-2" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+            <button onclick="goToSlide(3)" id="dot-3" class="h-3.5 w-3.5 rounded-full bg-slate-300 transition-all"></button>
+        </div>
+
+        <!-- Controlli audio/schermo -->
+        <div class="flex items-center gap-2.5">
+            <button id="sound-btn" onclick="toggleSound()" class="w-11 h-11 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 flex items-center justify-center text-slate-700 transition" title="Audio">
+                <i id="sound-icon" class="fa-solid fa-volume-high text-base"></i>
+            </button>
+            <button onclick="toggleFullscreen()" class="w-11 h-11 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-200 flex items-center justify-center text-slate-700 transition" title="Schermo intero">
+                <i class="fa-solid fa-expand text-base"></i>
+            </button>
+        </div>
+    </header>
+
+    <main id="slides-wrapper" class="slides-wrapper">
+
+        <!-- SLIDE 1: INTRODUZIONE -->
+        <section class="slide">
+            <div class="slide-content-zoom max-w-5xl mx-auto w-full text-center space-y-8">
+                
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-amber-100 border-2 border-amber-300 text-amber-900 text-sm font-extrabold uppercase tracking-wider">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
+                    <span>La gratitudine in famiglia</span>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="font-black text-6xl md:text-7xl lg:text-8xl text-slate-900 tracking-tight leading-tight">
+                        Il superpotere <br>
+                        <span class="text-amber-600">dei dettagli</span>
+                    </h2>
+                    <p class="text-xl md:text-3xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
+                        Accorgersi delle cose invisibili che qualcuno fa per noi ogni giorno prima che diventino scontate.
+                    </p>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="goToSlide(1)" class="px-8 py-4 rounded-2xl bg-slate-900 hover:bg-slate-800 text-amber-400 font-extrabold text-xl shadow-xl transition transform hover:scale-105 active:scale-95 inline-flex items-center gap-3 border-2 border-amber-400">
+                        <span>Scopri la sfida</span>
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 2: ATTIVITÀ "VERITÀ O BUGIA?" -->
+        <section class="slide">
+            <div class="slide-content-zoom max-w-5xl mx-auto w-full space-y-4">
+                
+                <div class="flex items-center justify-between border-b-2 border-slate-200 pb-3">
+                    <div>
+                        <span class="text-sm font-extrabold text-amber-600 uppercase tracking-wider">Verità o bugia?</span>
+                        <h2 class="font-black text-2xl md:text-3xl text-slate-900">Trova l'unica BUGIA nascosta tra i dati reali!</h2>
+                    </div>
+                    <button onclick="resetCards()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-bold transition">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Nascondi risposte
+                    </button>
+                </div>
+
+                <!-- 3 Card Affermazioni -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <!-- Affermazione 1 (VERITÀ) -->
+                    <div onclick="revealCard(1, false)" id="card-1" class="starlight-card p-6 cursor-pointer border-l-8 border-l-slate-900 flex flex-col justify-between h-72">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-black text-slate-900 bg-slate-100 px-3 py-1 rounded-lg">Affermazione A</span>
+                                <i class="fa-solid fa-socks text-slate-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-900 mb-2 leading-snug">Il lavaggio record</h3>
+                            <p class="text-sm text-slate-600 font-medium leading-relaxed">
+                                I genitori lavano, stendono e piegano in media oltre <strong>1.400 capi d'abbigliamento</strong> all'anno soltanto per i figli.
+                            </p>
+                        </div>
+                        <div id="result-1" class="mt-4 p-3 rounded-xl bg-slate-100 text-center font-extrabold text-slate-500 text-sm">
+                            Tocca per verificare
+                        </div>
+                    </div>
+
+                    <!-- Affermazione 2 (BUGIA SUBDOLA) -->
+                    <div onclick="revealCard(2, true)" id="card-2" class="starlight-card p-6 cursor-pointer border-l-8 border-l-slate-900 flex flex-col justify-between h-72">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-black text-slate-900 bg-slate-100 px-3 py-1 rounded-lg">Affermazione B</span>
+                                <i class="fa-solid fa-clock-rotate-left text-slate-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-900 mb-2 leading-snug">Tempo per sé stessi</h3>
+                            <p class="text-sm text-slate-600 font-medium leading-relaxed">
+                                Statisticamente, un genitore con figli alle medie riesce a ritagliarsi in media <strong>3 ore al giorno di tempo libero</strong> personale totalmente svincolato dal lavoro e dalla casa.
+                            </p>
+                        </div>
+                        <div id="result-2" class="mt-4 p-3 rounded-xl bg-slate-100 text-center font-extrabold text-slate-500 text-sm">
+                            Tocca per verificare
+                        </div>
+                    </div>
+
+                    <!-- Affermazione 3 (VERITÀ) -->
+                    <div onclick="revealCard(3, false)" id="card-3" class="starlight-card p-6 cursor-pointer border-l-8 border-l-slate-900 flex flex-col justify-between h-72">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-black text-slate-900 bg-slate-100 px-3 py-1 rounded-lg">Affermazione C</span>
+                                <i class="fa-solid fa-utensils text-slate-400 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-900 mb-2 leading-snug">Decisioni invisibili</h3>
+                            <p class="text-sm text-slate-600 font-medium leading-relaxed">
+                                Chi cucina a casa prende in media circa <strong>700 decisioni all'anno</strong> solo per scegliere cosa preparare a pranzo e a cena ogni singolo giorno.
+                            </p>
+                        </div>
+                        <div id="result-3" class="mt-4 p-3 rounded-xl bg-slate-100 text-center font-extrabold text-slate-500 text-sm">
+                            Tocca per verificare
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="bg-amber-50 rounded-xl px-4 py-3 flex items-center justify-between text-sm font-bold text-amber-900 border-2 border-amber-200">
+                    <span><i class="fa-solid fa-lightbulb text-amber-600 mr-2"></i> Quale di queste tre frasi è palesemente FALSA? Votate prima di toccare la LIM!</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 3: RIFLESSIONE -->
+        <section class="slide">
+            <div class="slide-content-zoom max-w-5xl mx-auto w-full space-y-4">
+                
+                <div class="border-b-2 border-slate-200 pb-2">
+                    <span class="text-sm font-extrabold text-amber-600 uppercase tracking-wider">Riflessione e Vangelo</span>
+                    <h2 class="font-black text-2xl md:text-3xl text-slate-900">Vedere l'invisibile con gli occhi del cuore</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                    
+                    <!-- Blocco 1: Riflessione Salesiana -->
+                    <div class="md:col-span-7 bg-white border-2 border-slate-200 p-6 rounded-2xl shadow-sm space-y-3">
+                        <div class="flex items-center gap-2 text-slate-900 font-black text-lg border-b pb-2">
+                            <i class="fa-solid fa-house-user text-amber-600"></i>
+                            <h3>Lo sguardo di Don Bosco a Valdocco</h3>
+                        </div>
+                        <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium">
+                            Don Bosco educava i suoi ragazzi a non dare mai nulla per scontato: dal pezzo di pane caldo fino alla giacca rammendata di notte da Mamma Margherita.
+                        </p>
+                        <p class="text-sm md:text-base text-slate-700 leading-relaxed font-medium bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            Molte cose ci sembrano "dovute" solo perché accadono tutti i giorni. Ma dietro ogni piatto pronto o maglia pulita c'è il tempo e la vita di qualcuno.
+                        </p>
+                    </div>
+
+                    <!-- Elemento Connettore Centrale -->
+                    <div class="hidden md:flex md:col-span-1 justify-center items-center">
+                        <div class="w-12 h-12 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center text-xl shadow-lg border-2 border-amber-300">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+
+                    <!-- Blocco 2: Passo del Vangelo Risaltato -->
+                    <div class="md:col-span-4 bg-slate-900 text-white p-6 rounded-2xl border-2 border-amber-400 shadow-lg space-y-3">
+                        <div class="flex items-center gap-2 text-amber-400 font-black text-base border-b border-slate-800 pb-2">
+                            <i class="fa-solid fa-book-bible"></i>
+                            <h3>Dal Vangelo di Luca (17)</h3>
+                        </div>
+                        <blockquote class="text-xs md:text-sm text-slate-200 italic font-medium leading-relaxed">
+                            «Gesù guarì dieci lebbrosi, ma uno solo tornò indietro a lodare Dio e a ringraziare. E Gesù disse: "Non sono stati guariti tutti e dieci? E gli altri nove dove sono?"»
+                        </blockquote>
+                        <div class="pt-1 text-xs font-bold text-amber-300">
+                            → Ringraziare ci fa uscire dalla massa che riceve senza accorgersene.
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="text-center pt-2">
+                    <p class="text-sm font-bold text-slate-700 bg-amber-100/60 border border-amber-300 py-2.5 px-6 rounded-xl inline-block">
+                        <i class="fa-solid fa-heart text-amber-600 mr-2"></i> La gratitudine trasforma la casa da semplice edificio a vera famiglia.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SLIDE 4: SINTESI DI IMPATTO -->
+        <section class="slide">
+            <div class="slide-content-zoom max-w-4xl mx-auto w-full text-center space-y-6">
+                
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-amber-100 border-2 border-amber-300 text-amber-900 text-sm font-extrabold uppercase tracking-wider">
+                    <i class="fa-solid fa-lightbulb text-amber-600"></i>
+                    <span>Sintesi della giornata</span>
+                </div>
+
+                <div class="starlight-card p-10 bg-amber-50/50 border-amber-300 space-y-5">
+                    <div class="w-16 h-16 rounded-2xl bg-slate-900 text-amber-400 flex items-center justify-center mx-auto text-2xl shadow-md border-2 border-amber-400">
+                        <i class="fa-solid fa-hands-holding text-amber-400"></i>
+                    </div>
+
+                    <h2 class="font-black text-3xl md:text-5xl text-slate-900 leading-snug">
+                        «Dire "grazie" è il primo passo per trasformare una casa in una famiglia.»
+                    </h2>
+
+                    <div class="w-16 h-1.5 bg-amber-500 mx-auto rounded-full"></div>
+                    <span class="text-sm font-extrabold text-slate-600 uppercase tracking-widest block">Giovedì 3 Dicembre</span>
+                </div>
+
+                <p class="text-sm font-extrabold text-slate-600">
+                    <i class="fa-solid fa-star text-amber-600 mr-1"></i> In cammino verso la Luce del Natale
+                </p>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Controlli laterali -->
+    <button onclick="prevSlide()" id="prev-btn" class="fixed left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white border-2 border-slate-300 text-slate-800 hover:bg-slate-100 flex items-center justify-center text-base transition shadow-md z-40 opacity-30 pointer-events-none">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <button onclick="nextSlide()" id="next-btn" class="fixed right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white border-2 border-slate-300 text-slate-800 hover:bg-slate-100 flex items-center justify-center text-base transition shadow-md z-40">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 4;
+        const slidesWrapper = document.getElementById('slides-wrapper');
+        let isMuted = false;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (isMuted) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                if (type === 'truth') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(784, audioCtx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.12);
+                } else if (type === 'lie') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.2);
+                } else if (type === 'click') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.04);
+                }
+            } catch (e) {}
+        }
+
+        function revealCard(cardNumber, isLie) {
+            const card = document.getElementById(`card-${cardNumber}`);
+            const result = document.getElementById(`result-${cardNumber}`);
+            
+            if (isLie) {
+                card.className = "starlight-card p-6 border-l-8 border-l-rose-600 bg-rose-50/80 flex flex-col justify-between h-72 shadow-lg";
+                result.className = "mt-4 p-3 rounded-xl bg-rose-600 text-white font-extrabold text-sm text-center shadow-md";
+                result.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> ECCO LA BUGIA! (Pochissimo tempo)';
+                playSound('lie');
+                
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.6 },
+                    colors: ['#D97706', '#FCD34D', '#0F172A']
+                });
+            } else {
+                card.className = "starlight-card p-6 border-l-8 border-l-emerald-600 bg-emerald-50/80 flex flex-col justify-between h-72";
+                result.className = "mt-4 p-3 rounded-xl bg-emerald-600 text-white font-extrabold text-sm text-center";
+                result.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> VERITÀ REALE!';
+                playSound('truth');
+            }
+        }
+
+        function resetCards() {
+            for (let i = 1; i <= 3; i++) {
+                const card = document.getElementById(`card-${i}`);
+                const result = document.getElementById(`result-${i}`);
+                card.className = "starlight-card p-6 cursor-pointer border-l-8 border-l-slate-900 flex flex-col justify-between h-72";
+                result.className = "mt-4 p-3 rounded-xl bg-slate-100 text-center font-extrabold text-slate-500 text-sm";
+                result.textContent = "Tocca per verificare";
+            }
+            playSound('click');
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            currentSlide = index;
+            slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+            updateNavUI();
+            playSound('click');
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
+
+        function updateNavUI() {
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i === currentSlide) {
+                    dot.classList.add('active-dot');
+                } else {
+                    dot.classList.remove('active-dot');
+                }
+            }
+
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (currentSlide === 0) {
+                prevBtn.classList.add('opacity-30', 'pointer-events-none');
+            } else {
+                prevBtn.classList.remove('opacity-30', 'pointer-events-none');
+            }
+
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.classList.add('opacity-30', 'pointer-events-none');
+            } else {
+                nextBtn.classList.remove('opacity-30', 'pointer-events-none');
+            }
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('sound-icon');
+            if (isMuted) {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+            } else {
+                icon.className = 'fa-solid fa-volume-high text-amber-600';
+                playSound('click');
+            }
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+            else if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        window.onload = function() {
+            updateNavUI();
+        };
+    </script>
+</body>
+</html>

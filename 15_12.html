@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#172d3a">
+    <meta name="description" content="Buongiorno salesiano del 15 dicembre per la Scuola Valsalice: sei quiz sui santi e una riflessione sull'umiltà di Giovanni Battista.">
+    <title>Buongiorno 15 dicembre</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --night: #172d3a;
+            --deep: #203f48;
+            --cream: #f5f0e5;
+            --paper: #fffdf7;
+            --coral: #d46b50;
+            --gold: #f1c86c;
+            --muted: #65736f;
+            --serif: Georgia, 'Times New Roman', serif;
+            --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        * { box-sizing: border-box; }
+        html { width: 100%; max-width: 100%; overflow-x: clip; scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+        body { width: 100%; max-width: 100%; margin: 0; overflow-x: clip; color: var(--night); background: var(--cream); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+        a { color: inherit; }
+        a:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+        .skip-link { position: fixed; z-index: 20; top: .75rem; left: .75rem; padding: .75rem 1rem; background: white; transform: translateY(-150%); }
+        .skip-link:focus { transform: translateY(0); }
+        .slide { position: relative; width: 100%; height: 100svh; min-height: 560px; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
+        .slide-inner { width: min(100%, 1280px); height: 100%; margin-inline: auto; padding: clamp(1.5rem, 4.5vh, 3.5rem) clamp(2rem, 7vw, 7rem); }
+        .eyebrow { display: flex; align-items: center; gap: .7rem; margin: 0 0 .8rem; color: var(--coral); font-size: .72rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+        .eyebrow::before { width: 22px; height: 2px; background: currentColor; content: ''; }
+        h1, h2, h3, p { margin-top: 0; }
+        h1, h2, blockquote { font-family: var(--serif); font-weight: 400; letter-spacing: -.055em; }
+        .slide-index { position: absolute; right: clamp(2rem, 7vw, 7rem); bottom: 1.25rem; color: var(--muted); font-size: .67rem; font-weight: 850; letter-spacing: .12em; }
+        .slide-index a { text-decoration: none; }
+        .slide-index a:hover { color: var(--coral); }
+        main { display: flex; flex-direction: column; }
+        .activity { order: 1; background: var(--cream); }
+        .cover { order: 2; color: var(--paper); background: var(--night); }
+        .reflection { order: 3; color: var(--night); background: var(--gold); }
+        .closing { order: 4; color: var(--paper); background: var(--deep); }
+        
+        .activity-meta { position: absolute; top: clamp(1.2rem, 3.5vh, 2.5rem); left: clamp(2rem, 7vw, 7rem); right: clamp(2rem, 7vw, 7rem); margin: 0; text-align: center; color: var(--muted); font-size: .75rem; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+        .activity .slide-inner { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: clamp(3.2rem, 7vh, 5rem); padding-bottom: 2.5rem; }
+        .activity > .slide-inner > .eyebrow { justify-content: center; }
+        .activity .slide-heading { width: 100%; justify-content: center; align-items: center; gap: 1rem; text-align: center; margin-bottom: 0.6rem; }
+        .activity .slide-heading h2 { font-size: clamp(2.2rem, 4.5vw, 3.5rem); }
+
+        /* Componenti Quiz Indovina Chi a 6 Schede */
+        .quiz-container { width: min(100%, 820px); margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: .8rem; }
+        
+        .quiz-tabs { display: flex; gap: .4rem; background: rgba(23,45,58,0.08); padding: .3rem; border-radius: .8rem; width: 100%; max-width: 500px; justify-content: space-between; }
+        .tab-btn { flex: 1; padding: .45rem .2rem; border: 0; background: transparent; color: var(--night); font-weight: 750; font-size: .75rem; border-radius: .5rem; cursor: pointer; transition: all .2s ease; text-align: center; }
+        .tab-btn.active { background: var(--deep); color: var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        
+        .viewer-box { width: 100%; max-width: 680px; aspect-ratio: 16/9.2; background: #0c1820; border-radius: 1.2rem; border: 3px solid var(--gold); box-shadow: 0 18px 40px rgba(0,0,0,0.3); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        
+        /* Vista Indizi */
+        .clues-board { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #1b3543 0%, #0a131a 100%); padding: 1.2rem 1.6rem; text-align: center; color: var(--paper); }
+        .clues-list { display: flex; flex-direction: column; gap: .45rem; width: 100%; max-width: 540px; text-align: left; margin-top: .5rem; }
+        .clue-item { background: rgba(255,253,247,0.08); padding: .45rem .8rem; border-radius: .5rem; border-left: 3px solid var(--gold); font-size: clamp(1rem, 1.3vw, 1.1rem); color: var(--paper); display: flex; align-items: center; gap: .6rem; }
+        .clue-num { color: var(--gold); font-weight: 850; font-size: .8rem; }
+
+        /* Vista Risposta Svelata con Foto Reale */
+        .reveal-board { position: absolute; inset: 0; background: radial-gradient(circle at center, #fffdf7 0%, #f5f0e5 100%); display: grid; grid-template-columns: 1fr 1.3fr; gap: 1.2rem; align-items: center; padding: 1.2rem 1.6rem; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; color: var(--night); }
+        .reveal-board.active { opacity: 1; pointer-events: auto; }
+        
+        .saint-img-wrap { width: 100%; height: 100%; max-height: 220px; border-radius: .9rem; overflow: hidden; border: 2px solid var(--gold); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .saint-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        .saint-info { text-align: left; display: flex; flex-direction: column; justify-content: center; }
+        .saint-info h3 { font-family: var(--serif); font-size: clamp(1.3rem, 2.2vw, 1.7rem); margin-bottom: .3rem; color: var(--deep); line-height: 1.1; }
+        .saint-info p { font-size: clamp(.9rem, 1.2vw, 1rem); color: var(--night); line-height: 1.45; margin: 0; }
+        .family-link { display: block; margin-top: .5rem; padding-top: .4rem; border-top: 1px dashed rgba(101,115,111,0.3); font-weight: 750; color: var(--coral); font-size: .85rem; }
+
+        .controls-row { display: flex; items-center: center; gap: 1rem; }
+        .reveal-button { padding: .75rem 1.6rem; border: 0; color: var(--paper); background: var(--deep); font: 800 .9rem var(--sans); cursor: pointer; transition: all .2s ease; border-radius: .6rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .reveal-button:hover, .reveal-button:focus-visible { background: var(--coral); transform: translateY(-2px); }
+
+        .reveal-card { width: min(100%, 820px); padding: .9rem 1.4rem; color: var(--paper); background: var(--deep); border-radius: .8rem; text-align: center; }
+        .reveal-card[hidden] { display: none; }
+        .reveal-card strong { color: var(--gold); font-size: 1.05rem; }
+        .reveal-card p { margin: .25rem 0 0; line-height: 1.45; font-size: clamp(.82rem, 1.05vw, .95rem); }
+        
+        .cover .slide-inner { display: flex; flex-direction: column; justify-content: space-between; }
+        .cover-top, .cover-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: rgba(255,253,247,.7); font-size: .7rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+        .cover-top strong, .cover-bottom span:last-child { color: var(--gold); }
+        .cover-main { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(2rem, 5vw, 5rem); }
+        .cover .eyebrow { color: var(--gold); }
+        .cover h1 { max-width: 760px; margin: 0; font-size: clamp(3.8rem, 7.5vw, 7.5rem); line-height: .88; }
+        .cover h1 em { color: var(--gold); font-weight: 400; }
+        .cover-theme { max-width: 560px; margin: 1.5rem 0 0; color: rgba(255,253,247,.77); font-size: clamp(.95rem, 1.4vw, 1.15rem); line-height: 1.6; }
+        .cover-theme strong { color: white; }
+        
+        .artwork-container-cover { position: relative; width: 100%; max-width: 380px; aspect-ratio: 4/3; justify-self: center; border-radius: 1rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,.5); border: 2px solid rgba(241,200,108,.4); background: radial-gradient(circle at center, #1b3543 0%, #0a131a 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
+        .artwork-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: .6rem .8rem; background: linear-gradient(transparent, rgba(0,0,0,.85)); color: var(--gold); font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
+        
+        .reflection .slide-inner { display: flex; flex-direction: column; justify-content: center; }
+        .reflection .eyebrow, .reflection .time { color: var(--coral); }
+        .slide-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: clamp(1rem, 2.5vh, 1.7rem); }
+        .slide-heading h2 { margin: 0; font-size: clamp(2.6rem, 5.3vw, 5.2rem); line-height: .92; }
+        .reflection-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(1rem, 2vw, 1.6rem); max-width: 850px; margin-inline: auto; }
+        .reflection-card { min-width: 0; padding: clamp(1.4rem, 3vw, 2.5rem); color: var(--night); background: var(--paper); }
+        .card-label { margin-bottom: .9rem; color: var(--coral); font-size: .67rem; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+        .reflection-card h3 { margin-bottom: .8rem; color: var(--deep); font-family: var(--serif); font-size: clamp(1.6rem, 2.7vw, 2.55rem); font-weight: 400; letter-spacing: -.04em; line-height: 1.05; }
+        .reflection-card p { margin-bottom: 0; color: var(--muted); font-size: clamp(.88rem, 1.15vw, 1rem); line-height: 1.7; }
+        .bible-quote { display: block; margin-top: 1rem; padding-top: .8rem; border-top: 1px solid #e8e1d4; color: var(--deep); font-family: var(--serif); font-size: 1.05rem; font-style: italic; }
+        .reflection-points { display: grid; gap: .75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+        .reflection-points li { display: grid; grid-template-columns: 1.5rem 1fr; gap: .55rem; color: var(--night); font-size: clamp(.85rem, 1.1vw, .97rem); line-height: 1.5; }
+        .reflection-points li::before { color: var(--coral); font-weight: 850; content: '✦'; }
+        .closing .slide-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .closing .eyebrow { color: var(--gold); }
+        .closing-mark { display: grid; width: clamp(4rem, 8vw, 6.5rem); aspect-ratio: 1; margin: .4rem auto 1rem; place-items: center; border: 1px solid rgba(255,253,247,.35); border-radius: 50%; font-size: clamp(2rem, 4vw, 3rem); }
+        .closing blockquote { max-width: 1000px; margin: .4rem auto 1.2rem; font-size: clamp(2.5rem, 6.5vw, 5.8rem); line-height: .96; }
+        .closing-note { margin: 0; color: rgba(255,253,247,.72); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+        .closing .slide-index { color: rgba(255,253,247,.65); }
+
+        /* Finitura grafica: palette luminosa, superfici morbide e dettagli decorativi. */
+        .activity { background: radial-gradient(ellipse at 50% 0%, #fffdf7 0%, var(--cream) 68%); }
+        .activity .slide-inner { gap: .35rem; }
+        .activity .slide-heading h2 { color: var(--deep); text-shadow: 0 3px 0 rgba(241,200,108,.28); }
+        .quiz-container { gap: 1rem; }
+        .quiz-tabs { padding: .4rem; gap: .5rem; border: 1px solid rgba(32,63,72,.1); background: rgba(255,253,247,.8); box-shadow: 0 8px 24px rgba(23,45,58,.07); }
+        .tab-btn { min-height: 2.5rem; font-size: .82rem; }
+        .tab-btn:hover:not(.active) { background: rgba(32,63,72,.08); }
+        .viewer-box { border: 4px solid var(--paper); outline: 1px solid rgba(241,200,108,.8); border-radius: 1.35rem; box-shadow: 0 22px 55px rgba(23,45,58,.2); }
+        .clues-board { background: radial-gradient(ellipse at 50% 0%, #315865 0%, #172d3a 62%, #101e27 100%); }
+        .clue-item { border: 1px solid rgba(255,253,247,.08); border-left: 3px solid var(--gold); background: rgba(255,253,247,.09); font-size: clamp(1.1rem, 1.6vw, 1.25rem); }
+        .reveal-board { background: linear-gradient(135deg, #fffdf7, #f3ead8); }
+        .saint-img-wrap { border-radius: 1.1rem; }
+        .reveal-button { border: 1px solid rgba(255,255,255,.16); border-radius: 999px; padding: .85rem 1.8rem; box-shadow: 0 8px 20px rgba(23,45,58,.2); }
+        .reveal-card { border: 1px solid rgba(241,200,108,.55); border-radius: 1rem; box-shadow: 0 12px 28px rgba(23,45,58,.12); }
+        .cover { isolation: isolate; background: #142a36; }
+        .cover::before, .cover::after { position: absolute; z-index: -1; border: 1px solid rgba(241,200,108,.13); border-radius: 50%; content: ''; pointer-events: none; }
+        .cover::before { width: min(68vw, 850px); aspect-ratio: 1; top: -38%; right: -12%; background: radial-gradient(circle, rgba(241,200,108,.12), transparent 68%); }
+        .cover::after { width: min(48vw, 620px); aspect-ratio: 1; bottom: -48%; left: -12%; }
+        .cover .slide-inner { position: relative; z-index: 1; }
+        .cover-top, .cover-bottom { letter-spacing: .16em; }
+        .cover-top strong { padding: .65rem .9rem; border: 1px solid rgba(241,200,108,.35); border-radius: 999px; background: rgba(255,253,247,.04); }
+        .cover h1 { text-wrap: balance; text-shadow: 0 8px 30px rgba(0,0,0,.18); }
+        .cover .eyebrow { letter-spacing: .2em; }
+        .artwork-container-cover { border-radius: 1.5rem; border-color: rgba(241,200,108,.55); background: radial-gradient(circle at 50% 35%, #315865 0%, #1b3543 42%, #0a131a 100%); box-shadow: 0 28px 65px rgba(0,0,0,.4), 0 0 0 10px rgba(255,253,247,.025); }
+        .artwork-container-cover > span { display: grid; width: 5.6rem; aspect-ratio: 1; place-items: center; border: 1px solid rgba(241,200,108,.35); border-radius: 50%; background: rgba(241,200,108,.1); }
+        .artwork-caption { padding: .9rem 1rem; }
+        .reflection { background: linear-gradient(145deg, #f3c968, #f5d991 70%, #f1c86c); }
+        .reflection-card { border: 1px solid rgba(255,255,255,.72); border-radius: 1.1rem; box-shadow: 0 16px 35px rgba(99,75,24,.12); }
+        .reflection-card h3 { text-wrap: balance; }
+        .bible-quote { border-color: rgba(32,63,72,.15); }
+        .closing { background: radial-gradient(ellipse at center, #315865 0%, var(--deep) 72%); }
+        .closing-mark { color: var(--gold); border-color: rgba(241,200,108,.55); box-shadow: 0 0 0 10px rgba(241,200,108,.06); }
+        .closing blockquote { text-wrap: balance; }
+        .slide-index a { padding: .25rem; }
+        button { font-family: inherit; }
+        button:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+        @media (max-width: 700px) {
+            .cover-top, .cover-bottom { font-size: .58rem; letter-spacing: .08em; }
+            .cover-top strong { padding: .5rem .65rem; }
+            .artwork-container-cover { border-radius: 1.2rem; }
+            .reflection-card { border-radius: .9rem; }
+        }
+
+        @media (max-width: 700px) {
+            html { scroll-snap-type: y proximity; }
+            .slide { height: auto; min-height: 100svh; overflow: visible; }
+            .slide-inner { min-height: 100svh; height: auto; padding: 2rem 1.2rem 3.5rem; }
+            .cover-main { grid-template-columns: 1fr; gap: 1.5rem; }
+            .cover h1 { font-size: clamp(3.5rem, 14vw, 5.5rem); }
+            .viewer-box { max-width: 100%; aspect-ratio: 4/3; }
+            .reveal-board { grid-template-columns: 1fr; text-align: center; }
+            .saint-info { text-align: center; }
+            .saint-img-wrap { max-height: 130px; }
+            .artwork-container-cover { max-width: 320px; }
+            .activity .slide-inner, .reflection .slide-inner { justify-content: flex-start; padding-top: 5rem; }
+            .activity .slide-inner { justify-content: center; padding-bottom: 3.5rem; }
+            .activity-meta { top: 1.5rem; left: 1.2rem; right: 1.2rem; font-size: .65rem; }
+            .reflection-grid { grid-template-columns: 1fr; }
+            .closing blockquote { font-size: clamp(2.2rem, 9vw, 4.2rem); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+    <main id="contenuto">
+
+        <!-- SLIDE 1: INDOVINA CHI CON 5 SANTI FAMOSI E IMMAGINI REALI (01) -->
+        <section class="slide activity" id="gioco" aria-labelledby="gioco-titolo">
+            <div class="slide-inner">
+                <p class="activity-meta">Scuola Valsalice · Martedì 15 dicembre</p>
+                <div class="slide-heading"><h2 id="gioco-titolo">Indovina chi… ha fatto spazio?</h2></div>
+                
+                <div class="quiz-container">
+                    <!-- Tab per selezionare tra i 5 Quiz -->
+                    <div class="quiz-tabs">
+                        <button class="tab-btn active" type="button" aria-label="Quiz 1" aria-pressed="true" onclick="switchQuiz(0)">1</button>
+                        <button class="tab-btn" type="button" aria-label="Quiz 2" aria-pressed="false" onclick="switchQuiz(1)">2</button>
+                        <button class="tab-btn" type="button" aria-label="Quiz 3" aria-pressed="false" onclick="switchQuiz(2)">3</button>
+                        <button class="tab-btn" type="button" aria-label="Quiz 4" aria-pressed="false" onclick="switchQuiz(3)">4</button>
+                        <button class="tab-btn" type="button" aria-label="Quiz 5" aria-pressed="false" onclick="switchQuiz(4)">5</button>
+                    </div>
+
+                    <div class="viewer-box">
+                        <!-- Vista Indizi -->
+                        <div class="clues-board" id="clues-board">
+                            <strong id="quiz-title" style="font-size: 1.1rem; color: var(--gold);">🔍 Quiz 1: Chi si nasconde?</strong>
+                            <div class="clues-list" id="clues-list">
+                                <!-- Gli indizi verranno inseriti via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Vista Risposta Svelata con Foto -->
+                        <div class="reveal-board" id="reveal-board">
+                            <div class="saint-img-wrap">
+                                <img id="saint-img" src="" alt="Santo Svelato">
+                            </div>
+                            <div class="saint-info">
+                                <h3 id="saint-name">Nome Santo</h3>
+                                <p id="saint-desc">Descrizione del Santo...</p>
+                                <span class="family-link" id="saint-family">Nesso con la Casa: ...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="controls-row">
+                        <button class="reveal-button" id="reveal-btn" type="button" onclick="toggleReveal()">❓ Svela il Santo</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="slide-index"><a href="#gioco">01</a> — <a href="#inizio">02 →</a></div>
+        </section>
+
+        <!-- SLIDE 2: COVER (02) -->
+        <section class="slide cover" id="inizio" aria-labelledby="titolo">
+            <div class="slide-inner">
+                <div class="cover-top"><span>Scuola Valsalice</span><strong>Martedì 15 dicembre</strong></div>
+                <div class="cover-main">
+                    <div>
+                        <p class="eyebrow">La santità del quotidiano</p>
+                        <h1 id="titolo">Fare spazio <em>a Gesù.</em></h1>
+                        <p class="cover-theme"><strong>Il tema di oggi</strong><br>Giovanni Battista non cerca il primo posto: riconosce Gesù e gli prepara la strada. Anche noi possiamo fare spazio agli altri con umiltà, ascolto e piccoli gesti di servizio.</p>
+                    </div>
+                    <div class="artwork-container-cover">
+                        <span style="font-size: 3rem; margin-bottom: .5rem;">🏡</span>
+                        <strong style="color: var(--gold); font-size: 1.1rem; font-family: var(--serif);">Preparare la strada</strong>
+                        <p style="color: rgba(255,253,247,0.7); font-size: .8rem; margin-top: .4rem;">L'umiltà di chi sa mettersi al servizio</p>
+                        <div class="artwork-caption">Giovanni Battista e i santi del servizio</div>
+                    </div>
+                </div>
+                <div class="cover-bottom"><span>Avvento Salesiano</span><span>Umiltà e servizio</span></div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: RIFLESSIONE SALESIANA (03) -->
+        <section class="slide reflection" id="riflessione" aria-labelledby="riflessione-titolo">
+            <div class="slide-inner">
+                <p class="eyebrow">02 · Riflessione salesiana</p>
+                <div class="slide-heading">
+                    <h2 id="riflessione-titolo">Farsi piccoli, per fare spazio.</h2>
+                </div>
+                <div class="reflection-grid">
+                    <article class="reflection-card">
+                        <h3>La grandezza è mettersi al servizio.</h3>
+                        <p>Giovanni Battista non parla di sé: riconosce che Gesù è più grande e prepara il cuore delle persone ad accoglierlo. La sua umiltà non è disprezzarsi, ma conoscere il proprio posto e usarlo per il bene degli altri. Anche noi possiamo “slegare i sandali” con gesti semplici: ascoltare senza interrompere, aiutare senza cercare applausi, lasciare spazio a chi ne ha bisogno.</p>
+                        <span class="bible-quote">«Io non sono degno di chinarmi per slegare i lacci dei suoi sandali».<br><strong>È Giovanni Battista a pronunciare queste parole riferendosi a Gesù, nel Vangelo secondo Marco (Mc 1,7).</strong></span>
+                    </article>
+                </div>
+            </div>
+            <div class="slide-index"><a href="#riflessione">03</a> — <a href="#frase-finale">04 →</a></div>
+        </section>
+
+        <!-- SLIDE 4: FRASE FINALE (04) -->
+        <section class="slide closing" id="frase-finale" aria-labelledby="titolo-finale">
+            <div class="slide-inner">
+                <p class="eyebrow">La frase da portare con noi</p>
+                <div class="closing-mark" aria-hidden="true">✦</div>
+                <blockquote id="titolo-finale">«La vera grandezza è saper fare spazio.»</blockquote>
+                <p class="closing-note">Oggi fai spazio a qualcuno: ascolta, aiuta e servi senza aspettarti applausi.</p>
+            </div>
+            <div class="slide-index"><a href="#frase-finale">04</a> — <a href="#gioco">Torna all’inizio ↑</a></div>
+        </section>
+
+    </main>
+
+    <script>
+        // Database dei 5 Santi con indizi, spiegazioni e foto
+        const quizData = [
+            {
+                title: "🔍 Quiz 1: Chi si nasconde?",
+                clues: [
+                    "Fin da piccolo a Castelnuovo faceva i giochi di prestigio per far pregare i compagni.",
+                    "Ha trasformato la sua casa in una grande famiglia per ragazzi senza casa.",
+                    "Sua mamma lo ha aiutato a creare lo spirito di famiglia a Torino.",
+                    "È il padre e maestro dei giovani... e di questa scuola!"
+                ],
+                name: "San Giovanni Bosco",
+                desc: "Ha inventato l'Oratorio e il Sistema Preventivo basato su ragione, religione e amorevolezza. Con Mamma Margherita ha aperto le porte di casa ai ragazzi più soli.",
+                family: "🏡 Ha fatto dell'accoglienza di famiglia il segreto per far sentire amato ogni ragazzo.",
+                img: "https://www.elledici.org/wp-content/uploads/2019/01/P03417.jpg"
+            },
+            {
+                title: "🔍 Quiz 2: Chi si nasconde?",
+                clues: [
+                    "Un ragazzo dei nostri giorni: amava i videogiochi, la programmazione e vestiva in felpa e sneakers.",
+                    "Ha creato un sito web per catalogare tutti i miracoli eucaristici del mondo.",
+                    "Diceva sempre: 'Tutti nascono originali, ma molti muoiono come fotocopie'.",
+                    "È stato canonizzato di recente ed è il patrono di Internet per i giovani!"
+                ],
+                name: "San Carlo Acutis",
+                desc: "Un santo geniale, solare e moderno. Amava l'Eucaristia definendola la sua 'autostrada per il cielo' e aiutava la sua famiglia e i poveri della sua città.",
+                family: "🏡 Dimostra che si può essere santi oggi, tra tecnologia, compiti e affetto in famiglia.",
+                img: "https://www.unitineldono.it/wp-content/uploads/2025/03/27-aprile_Carlo-Acutis-Imago-Mundi_APPROVED-400x600.png"
+            },
+            {
+                title: "🔍 Quiz 3: Chi si nasconde?",
+                clues: [
+                    "Figlio di un ricco mercante di stoffe, ha rinunciato ai beni di famiglia per vestire l'abito povero.",
+                    "Amava la natura, parlava agli animali e chiamava il Sole 'fratello' e la Luna 'sorella'.",
+                    "A Gubbio ha addomesticato un lupo con la forza della dolcezza.",
+                    "Ha inventato il primissimo Presepe della storia a Greccio!"
+                ],
+                name: "San Francesco d'Assisi",
+                desc: "L'uomo del Cantico delle Creature. Ha mostrato al mondo che l'intera creazione è un'unica grande famiglia creata da Dio.",
+                family: "🏡 Ci insegna a considerare fraterno ogni legame e a vivere la casa con essenzialità.",
+                img: "https://complessopilotta.it/wp-content/uploads/2019/07/San-Francesco-dAssisi-riceve-le-stigmate.jpg"
+            },
+            {
+                title: "🔍 Quiz 4: Chi si nasconde?",
+                clues: [
+                    "Vestita con un abito bianco e blu, ha dedicato tutta la vita agli ultimi nella capitale del Bengala Occidentale.",
+                    "Ha vinto il Premio Nobel per la Pace nel 1979.",
+                    "Diceva: 'Non tutti possiamo fare grandi cose, ma possiamo fare piccole cose con grande amore'.",
+                    "Se le chiedevano come cambiare il mondo, rispondeva: 'Va' a casa e ama la tua famiglia'."
+                ],
+                name: "Santa Madre Teresa di Calcutta",
+                desc: "Famosa in tutto il mondo per il suo sorriso e la sua dedizione agli ammalati e agli abbandonati, creando per loro le 'Case del Cuore Immacolato'.",
+                family: "🏡 Ricordava sempre che la pace nel mondo inizia proprio portando amore a casa propria.",
+                img: "https://commons.wikimedia.org/wiki/Special:FilePath/Mother_Teresa_1.jpg?width=600"
+            },
+            {
+                title: "🔍 Quiz 5: Chi si nasconde?",
+                clues: [
+                    "Viveva nel deserto e invitava tutti a prepararsi per l'arrivo del Signore.",
+                    "Battezzò Gesù nel fiume Giordano.",
+                    "Non voleva attirare l'attenzione su di sé: indicava agli altri Gesù.",
+                    "Nel Vangelo secondo Marco dice di non essere degno di chinarsi a slegare i sandali di Gesù."
+                ],
+                name: "San Giovanni Battista",
+                desc: "Profeta e precursore di Gesù, lo riconobbe come colui che veniva dopo di lui ed ebbe il coraggio di preparargli la strada.",
+                family: "🏡 La sua umiltà ci insegna a mettere i nostri talenti al servizio degli altri e a lasciare spazio a Gesù.",
+                img: "https://commons.wikimedia.org/wiki/Special:FilePath/Leonardo_da_Vinci_-_Saint_John_the_Baptist_C2RMF_retouched.jpg?width=600"
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let isRevealed = false;
+
+        function renderQuiz(index) {
+            currentQuizIndex = index;
+            isRevealed = false;
+            const data = quizData[index];
+
+            // Aggiorna Tab attive
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach((tab, i) => {
+                const isActive = i === index;
+                tab.classList.toggle('active', isActive);
+                tab.setAttribute('aria-pressed', String(isActive));
+            });
+
+            // Popola gli indizi
+            document.getElementById('quiz-title').textContent = data.title;
+            const cluesList = document.getElementById('clues-list');
+            cluesList.innerHTML = '';
+            data.clues.forEach((clue, i) => {
+                const item = document.createElement('div');
+                item.className = 'clue-item';
+                item.innerHTML = `<span class="clue-num">${i + 1}.</span> <span>${clue}</span>`;
+                cluesList.appendChild(item);
+            });
+
+            // Popola la scheda risposta
+            document.getElementById('saint-img').src = data.img;
+            document.getElementById('saint-img').alt = data.name;
+            document.getElementById('saint-name').textContent = data.name;
+            document.getElementById('saint-desc').textContent = data.desc;
+            document.getElementById('saint-family').textContent = data.family;
+
+            // Reset stato vista (nascosto)
+            document.getElementById('reveal-board').classList.remove('active');
+            document.getElementById('reveal-btn').textContent = '❓ Svela il Santo';
+        }
+
+        function switchQuiz(index) {
+            renderQuiz(index);
+        }
+
+        function toggleReveal() {
+            isRevealed = !isRevealed;
+            const revealBoard = document.getElementById('reveal-board');
+            const revealBtn = document.getElementById('reveal-btn');
+
+            if (isRevealed) {
+                revealBoard.classList.add('active');
+                revealBtn.textContent = '✨ Santo svelato!';
+            } else {
+                revealBoard.classList.remove('active');
+                revealBtn.textContent = '❓ Svela il Santo';
+            }
+        }
+
+        window.onload = function() {
+            renderQuiz(0);
+        };
+    </script>
+</body>
+</html>
